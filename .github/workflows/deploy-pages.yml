@@ -28,6 +28,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
+          cp gantry.html _site/gantry.html
           # SPA/static safety: serve index.html for unknown paths
           cp index.html _site/404.html
           # 3D runtime + assets (Three.js, Draco, glTF model, HDRI)
