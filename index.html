@@ -19,12 +19,8 @@
 
 <style>
 :root{
-  --bg:#F4F1EC;        /* off-white */
-  --ink:#0A0A0A;       /* near-black */
-  --slate:#2A3038;     /* cold accent */
-  --line:rgba(10,10,10,.14);
-  --line-soft:rgba(10,10,10,.08);
-  --dim:#5b5f63;
+  --bg:#F4F1EC; --ink:#0A0A0A; --slate:#2A3038;
+  --line:rgba(10,10,10,.14); --line-soft:rgba(10,10,10,.08); --dim:#5b5f63;
   --mono:"JetBrains Mono",ui-monospace,monospace;
   --sans:"Inter Tight",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   --container:1280px;
@@ -33,95 +29,80 @@
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-::selection{background:var(--ink);color:var(--bg)}
+a{color:inherit;text-decoration:none}::selection{background:var(--ink);color:var(--bg)}
 :focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
 .container{max-width:var(--container);margin-inline:auto;padding-inline:28px}
 
-/* ---------------- header ---------------- */
 header.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .3s,backdrop-filter .3s,border-color .3s;border-bottom:1px solid transparent}
-header.nav.scrolled{background:rgba(244,241,236,.72);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom-color:var(--line-soft)}
+header.nav.scrolled{background:rgba(244,241,236,.7);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px) saturate(140%);border-bottom-color:var(--line-soft)}
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px;max-width:var(--container);margin-inline:auto;padding-inline:28px}
-.logo{font-weight:700;font-size:18px;letter-spacing:.16em}
-.logo b{font-weight:800}
+.logo{font-weight:700;font-size:18px;letter-spacing:.16em}.logo b{font-weight:800}
 .nav-right{display:flex;align-items:center;gap:22px}
-.nav-right .mono{color:var(--ink)}
 .nav-right a.pill{border:1px solid var(--ink);border-radius:999px;padding:8px 16px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;transition:.2s}
 .nav-right a.pill:hover{background:var(--ink);color:var(--bg)}
-@media(max-width:760px){.nav-right .mono.zone{display:none}}
+@media(max-width:760px){.nav-right .zone{display:none}}
 
-/* ---------------- hero / scroll experience ---------------- */
 .experience{position:relative}
-.exp-track{height:560vh;position:relative}      /* scroll length for 4 stages */
-.exp-sticky{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:var(--bg)}
+.exp-track{height:600vh;position:relative}
+.exp-sticky{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#cfd3d6}
 #scene{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block}
-.scene-loading{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:13px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);background:var(--bg);transition:opacity .8s}
+.vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(125% 105% at 50% 42%, transparent 52%, rgba(10,12,14,.34))}
+.warp-streaks{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,255,255,.4) 7px 8px);mix-blend-mode:overlay;transition:opacity .12s linear}
+.warp-flash{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(120% 120% at 50% 50%, #ffffff, #F4F1EC)}
+.scene-loading{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;gap:13px;font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);background:var(--bg);transition:opacity .8s}
 .scene-loading.hide{opacity:0;pointer-events:none}
 .scene-loading .spin{width:16px;height:16px;border:2px solid var(--line);border-top-color:var(--ink);border-radius:50%;animation:spin .9s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* service text panel (backdrop blur) */
 .svc{position:absolute;z-index:3;left:max(28px,calc((100vw - var(--container))/2 + 28px));top:50%;transform:translateY(-50%);width:min(440px,42vw);
-  background:rgba(244,241,236,.62);backdrop-filter:blur(16px) saturate(130%);-webkit-backdrop-filter:blur(16px) saturate(130%);
-  border:1px solid var(--line-soft);border-radius:4px;padding:30px 30px 28px}
+  background:rgba(244,241,236,.6);backdrop-filter:blur(18px) saturate(130%);-webkit-backdrop-filter:blur(18px) saturate(130%);
+  border:1px solid var(--line-soft);border-radius:4px;padding:30px;transition:opacity .45s cubic-bezier(.2,.7,.2,1),transform .45s cubic-bezier(.2,.7,.2,1)}
+.svc.swap{opacity:0;transform:translateY(calc(-50% + 16px))}
 .svc .num{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--slate)}
 .svc h2{font-size:clamp(2rem,4.4vw,3.4rem);line-height:1;letter-spacing:-.03em;font-weight:700;margin:14px 0 0}
-.svc .sub{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-top:12px}
+.svc .sub{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-top:12px}
 .svc p{color:#26282b;font-size:15.5px;margin:16px 0 0;max-width:38ch}
 .svc .feat{display:flex;flex-wrap:wrap;gap:7px;margin-top:18px}
 .svc .feat span{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);border:1px solid var(--line);border-radius:999px;padding:5px 10px}
-.svc.swap{opacity:0;transform:translateY(calc(-50% + 14px))}
-.svc{transition:opacity .45s cubic-bezier(.2,.7,.2,1),transform .45s cubic-bezier(.2,.7,.2,1)}
 
-/* stage indicator bottom-left */
-.stage-ind{position:absolute;z-index:3;left:max(28px,calc((100vw - var(--container))/2 + 28px));bottom:34px;font-family:var(--mono)}
-.stage-ind .veh{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink)}
-.stage-ind .spd{font-size:40px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-top:6px;display:flex;align-items:baseline;gap:8px;font-family:var(--sans)}
+.stage-ind{position:absolute;z-index:3;left:max(28px,calc((100vw - var(--container))/2 + 28px));bottom:34px;font-family:var(--mono);text-shadow:0 1px 12px rgba(244,241,236,.5)}
+.stage-ind .veh{font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+.stage-ind .spd{font-size:42px;font-weight:700;letter-spacing:-.02em;line-height:1;margin-top:6px;display:flex;align-items:baseline;gap:8px;font-family:var(--sans)}
 .stage-ind .spd small{font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--slate);font-weight:500}
 .stage-ind .spd .v{font-variant-numeric:tabular-nums}
 
-/* progress dots bottom-right */
 .dots{position:absolute;z-index:3;right:max(28px,calc((100vw - var(--container))/2 + 28px));bottom:36px;display:flex;flex-direction:column;gap:14px;align-items:flex-end}
 .dots .d{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);transition:color .3s}
 .dots .d .ring{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--dim);transition:.3s}
 .dots .d.on{color:var(--ink)}
 .dots .d.on .ring{background:var(--ink);border-color:var(--ink);box-shadow:0 0 0 4px rgba(10,10,10,.08)}
-.dots .d .lab{opacity:0;transform:translateX(6px);transition:.3s}
-.dots .d.on .lab{opacity:1;transform:none}
+.dots .d .lab{opacity:0;transform:translateX(6px);transition:.3s}.dots .d.on .lab{opacity:1;transform:none}
 
-.scroll-hint{position:absolute;z-index:3;left:50%;bottom:18px;transform:translateX(-50%);font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);transition:opacity .4s;animation:bob 1.9s ease-in-out infinite}
+.scroll-hint{position:absolute;z-index:3;left:50%;bottom:18px;transform:translateX(-50%);font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);transition:opacity .4s;animation:bob 1.9s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
 @media (prefers-reduced-motion:reduce){.scroll-hint{animation:none}}
 
 @media(max-width:760px){
-  .svc{left:18px;right:18px;width:auto;top:auto;bottom:150px;transform:none}
-  .svc.swap{transform:translateY(14px)}
-  .svc p{display:none}
-  .stage-ind{left:18px;bottom:84px}
-  .dots{right:18px;bottom:86px}
-  .dots .d .lab{display:none}
+  .svc{left:16px;right:16px;width:auto;top:auto;bottom:150px;transform:none}.svc.swap{transform:translateY(16px)}.svc p{display:none}
+  .stage-ind{left:16px;bottom:88px}.dots{right:16px;bottom:90px}.dots .d .lab{display:none}
 }
 
-/* ---------------- contact ---------------- */
 .contact{background:var(--bg);padding:clamp(90px,13vw,180px) 0 clamp(70px,9vw,120px);border-top:1px solid var(--line-soft)}
 .contact .eyebrow{color:var(--slate)}
-.contact h2{font-size:clamp(2.4rem,6vw,5rem);line-height:1.0;letter-spacing:-.035em;font-weight:700;margin:22px 0 0;max-width:16ch}
+.contact h2{font-size:clamp(2.4rem,6vw,5rem);line-height:1;letter-spacing:-.035em;font-weight:700;margin:22px 0 0;max-width:16ch}
 .contact .grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;margin-top:60px;align-items:end}
 .contact .mail{font-size:clamp(1.5rem,3.4vw,2.6rem);font-weight:600;letter-spacing:-.02em;border-bottom:2px solid var(--ink);padding-bottom:6px;display:inline-block;transition:.2s}
 .contact .mail:hover{color:var(--slate);border-color:var(--slate)}
 .contact .meta{display:flex;flex-direction:column;gap:18px}
-.contact .meta .row{display:flex;flex-direction:column;gap:5px}
 .contact .meta .k{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .contact .meta .val{font-size:17px;font-weight:500}
 @media(max-width:760px){.contact .grid{grid-template-columns:1fr;gap:34px}}
 
-/* ---------------- footer ---------------- */
 footer{background:var(--ink);color:var(--bg);padding:70px 0 40px;overflow:hidden}
 footer .top{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap;border-bottom:1px solid rgba(244,241,236,.14);padding-bottom:34px}
 footer .col h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,241,236,.5);margin:0 0 14px}
-footer .col a,footer .col p{display:block;color:rgba(244,241,236,.82);font-size:14.5px;margin:0 0 9px}
-footer .col a:hover{color:#fff}
+footer .col a,footer .col p{display:block;color:rgba(244,241,236,.82);font-size:14.5px;margin:0 0 9px}footer .col a:hover{color:#fff}
 .bigmark{font-weight:800;letter-spacing:-.02em;line-height:.86;font-size:clamp(3.4rem,17vw,15rem);margin:34px 0 0;white-space:nowrap}
 footer .legal{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:rgba(244,241,236,.5);margin-top:30px}
 </style>
@@ -138,11 +119,13 @@ footer .legal{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap
   </div>
 </header>
 
-<!-- ============= SCROLL EXPERIENCE (4 vehicles) ============= -->
 <section class="experience" id="experience" aria-label="Nos services">
   <div class="exp-track" id="expTrack">
     <div class="exp-sticky">
       <canvas id="scene" aria-hidden="true"></canvas>
+      <div class="vignette"></div>
+      <div class="warp-streaks" id="warpStreaks"></div>
+      <div class="warp-flash" id="warpFlash"></div>
       <div class="scene-loading" id="sceneLoading"><span class="spin"></span> Chargement</div>
 
       <div class="svc" id="svc">
@@ -154,29 +137,25 @@ footer .legal{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap
       </div>
 
       <div class="stage-ind">
-        <div class="veh" id="stageVeh">Berline sport</div>
+        <div class="veh" id="stageVeh">Audi RS3</div>
         <div class="spd"><span class="v" id="stageSpeed">090</span><small>KM/H</small></div>
       </div>
-
       <div class="dots" id="dots"></div>
       <div class="scroll-hint" id="scrollHint">Défiler</div>
     </div>
   </div>
 </section>
 
-<!-- ============= CONTACT ============= -->
 <section class="contact" id="contact">
   <div class="container">
     <div class="mono eyebrow">Un seul interlocuteur</div>
     <h2>À votre service,<br>partout en France.</h2>
     <div class="grid">
-      <div>
-        <a class="mail" href="mailto:contact@141private.fr">contact@141private.fr</a>
-      </div>
+      <div><a class="mail" href="mailto:contact@141private.fr">contact@141private.fr</a></div>
       <div class="meta">
-        <div class="row"><span class="k">Zone</span><span class="val">France entière</span></div>
-        <div class="row"><span class="k">Disponibilité</span><span class="val">24 h / 24 — 7 j / 7</span></div>
-        <div class="row"><span class="k">Site</span><span class="val">141private.fr</span></div>
+        <div><div class="k">Zone</div><div class="val">France entière</div></div>
+        <div><div class="k">Disponibilité</div><div class="val">24 h / 24 — 7 j / 7</div></div>
+        <div><div class="k">Site</div><div class="val">141private.fr</div></div>
       </div>
     </div>
   </div>
@@ -185,39 +164,17 @@ footer .legal{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap
 <footer>
   <div class="container">
     <div class="top">
-      <div class="col">
-        <h4>Services</h4>
-        <a href="#experience">Location premium</a>
-        <a href="#experience">Transport VIP</a>
-        <a href="#experience">Protection rapprochée</a>
-        <a href="#experience">Aviation privée</a>
-      </div>
-      <div class="col">
-        <h4>Maison</h4>
-        <p>France entière · 24/7</p>
-        <a href="mailto:contact@141private.fr">contact@141private.fr</a>
-        <a href="#">141private.fr</a>
-      </div>
-      <div class="col">
-        <h4>Discrétion</h4>
-        <p>Confidentialité absolue</p>
-        <p>NDA sur demande</p>
-      </div>
+      <div class="col"><h4>Services</h4><a href="#experience">Location premium</a><a href="#experience">Transport VIP</a><a href="#experience">Protection rapprochée</a><a href="#experience">Aviation privée</a></div>
+      <div class="col"><h4>Maison</h4><p>France entière · 24/7</p><a href="mailto:contact@141private.fr">contact@141private.fr</a><a href="#">141private.fr</a></div>
+      <div class="col"><h4>Discrétion</h4><p>Confidentialité absolue</p><p>NDA sur demande</p></div>
     </div>
     <div class="bigmark">141 PRIVATE</div>
-    <div class="legal">
-      <span>© 2026 141 Private — Conciergerie privée</span>
-      <span>Sec · Technique · Discret</span>
-    </div>
+    <div class="legal"><span>© 2026 141 Private — Conciergerie privée</span><span>Sec · Technique · Discret</span></div>
   </div>
 </footer>
 
 <script>
-(function(){
-  var nav=document.getElementById('nav');
-  function onScroll(){ nav.classList.toggle('scrolled', window.scrollY>12); }
-  onScroll(); addEventListener('scroll',onScroll,{passive:true});
-})();
+(function(){var nav=document.getElementById('nav');function s(){nav.classList.toggle('scrolled',scrollY>12);}s();addEventListener('scroll',s,{passive:true});})();
 </script>
 
 <script type="module">
@@ -228,12 +185,12 @@ import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 const SERVICES=[
-  {num:"01 / 04",title:"Location",sub:"Flotte privée premium",veh:"Berline sport",speed:90,
-   desc:"Berlines et grand tourisme d'exception, livrées où vous voulez, quand vous voulez.",
-   feat:["S-Class","BMW Série 7","Audi A8","Porsche","Bentley"]},
-  {num:"02 / 04",title:"Transport VIP",sub:"Chauffeurs d'élite",veh:"Van VIP",speed:110,
+  {num:"01 / 04",title:"Location",sub:"Flotte privée premium",veh:"Audi RS3",speed:90,
+   desc:"Berlines sport et grand tourisme d'exception, livrées où vous voulez, quand vous voulez.",
+   feat:["Audi RS3","S-Class","BMW Série 7","Porsche","Bentley"]},
+  {num:"02 / 04",title:"Transport VIP",sub:"Chauffeurs d'élite",veh:"Mercedes Classe V",speed:110,
    desc:"Chauffeurs formés en école hôtelière, vans aménagés, discrétion absolue de porte à porte.",
-   feat:["École hôtelière","Vans aménagés","NDA","24/7"]},
+   feat:["École hôtelière","Classe V aménagée","NDA","24/7"]},
   {num:"03 / 04",title:"Protection",sub:"Sécurité rapprochée",veh:"SUV blindé",speed:130,
    desc:"Agents issus des forces spéciales, véhicules blindés VR6 / VR7, dispositifs sur-mesure.",
    feat:["Ex-forces spéciales","Blindage VR6/VR7","Close protection"]},
@@ -241,88 +198,83 @@ const SERVICES=[
    desc:"Aviation d'affaires via opérateurs partenaires certifiés EASA. Partout, sans attente.",
    feat:["Opérateurs EASA","Vol à la demande","Empty legs"]}
 ];
-
-const track=document.getElementById('expTrack'), canvas=document.getElementById('scene'),
-      loadingEl=document.getElementById('sceneLoading'),
-      svc=document.getElementById('svc'), svcNum=document.getElementById('svcNum'), svcTitle=document.getElementById('svcTitle'),
-      svcSub=document.getElementById('svcSub'), svcDesc=document.getElementById('svcDesc'), svcFeat=document.getElementById('svcFeat'),
-      stageVeh=document.getElementById('stageVeh'), stageSpeed=document.getElementById('stageSpeed'),
-      dotsEl=document.getElementById('dots'), hint=document.getElementById('scrollHint');
-
-// build dots
-SERVICES.forEach((s,i)=>{ const d=document.createElement('div'); d.className='d'+(i===0?' on':''); d.innerHTML='<span class="lab">'+s.title+'</span><span class="ring"></span>'; dotsEl.appendChild(d); });
+const $=id=>document.getElementById(id);
+const track=$('expTrack'),canvas=$('scene'),loadingEl=$('sceneLoading'),svc=$('svc'),svcNum=$('svcNum'),svcTitle=$('svcTitle'),svcSub=$('svcSub'),svcDesc=$('svcDesc'),svcFeat=$('svcFeat'),stageVeh=$('stageVeh'),stageSpeed=$('stageSpeed'),dotsEl=$('dots'),hint=$('scrollHint'),flash=$('warpFlash'),streaks=$('warpStreaks');
+SERVICES.forEach((s,i)=>{const d=document.createElement('div');d.className='d'+(i===0?' on':'');d.innerHTML='<span class="lab">'+s.title+'</span><span class="ring"></span>';dotsEl.appendChild(d);});
 const dots=[...dotsEl.children];
+svcFeat.innerHTML=SERVICES[0].feat.map(f=>'<span>'+f+'</span>').join('');
 
 let renderer,scene,camera,ready=false,failed=false,loaded=0;
-const vehicles=[]; // [car, van, suv, jet]
-const WHEELS=[[],[],[],[]];
-function fail(m){failed=true; if(loadingEl){loadingEl.classList.remove('hide');loadingEl.textContent='⚠ '+(m||'3D indisponible');}}
+const vehicles=[],WHEELS=[[],[],[],[]],layers=[];
+function fail(m){failed=true;if(loadingEl){loadingEl.classList.remove('hide');loadingEl.textContent='⚠ '+(m||'3D indisponible');}}
 
-// ---- materials ----
-const whitePaint=()=>new THREE.MeshPhysicalMaterial({color:0xeceee9,metalness:0,roughness:0.33,clearcoat:1,clearcoatRoughness:0.09,envMapIntensity:1.15});
-const glass=()=>new THREE.MeshPhysicalMaterial({color:0x14171c,metalness:0.3,roughness:0.06,envMapIntensity:1.6});
-const tire=()=>new THREE.MeshStandardMaterial({color:0x0c0d10,roughness:0.75});
-const slate=()=>new THREE.MeshStandardMaterial({color:0x2A3038,roughness:0.45,metalness:0.3});
-const chrome=()=>new THREE.MeshStandardMaterial({color:0xa6adb4,metalness:1,roughness:0.22});
+const paint=(c,r=0.32)=>new THREE.MeshPhysicalMaterial({color:c,metalness:0.9,roughness:r,clearcoat:1,clearcoatRoughness:0.08,envMapIntensity:1.5});
+const matte=(c)=>new THREE.MeshPhysicalMaterial({color:c,metalness:0.2,roughness:0.6,clearcoat:0.3,envMapIntensity:0.8});
+const glass=()=>new THREE.MeshPhysicalMaterial({color:0x0b0e12,metalness:0.4,roughness:0.05,envMapIntensity:2.0});
+const tire=()=>new THREE.MeshStandardMaterial({color:0x0a0b0d,roughness:0.85});
+const slate=()=>new THREE.MeshStandardMaterial({color:0x2A3038,roughness:0.4,metalness:0.5});
+const chrome=()=>new THREE.MeshStandardMaterial({color:0xb6bdc4,metalness:1,roughness:0.18});
+function part(g,geo,mat,x=0,y=0,z=0,rx=0,ry=0,rz=0){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);m.castShadow=true;m.receiveShadow=false;g.add(m);return m;}
+function wheel(r,w){const g=new THREE.Group();part(g,new THREE.CylinderGeometry(r,r,w,30),tire(),0,0,0,Math.PI/2);part(g,new THREE.CylinderGeometry(r*0.55,r*0.55,w+0.02,8),chrome(),0,0,0,Math.PI/2);return g;}
+function wheels4(g,store,pts,r,w){pts.forEach(p=>{const wh=wheel(r,w);wh.position.set(p[0],r,p[1]);g.add(wh);store.push(wh);});}
 
-function mesh(geo,mat,x=0,y=0,z=0){const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=false;return m;}
-function makeWheel(r,w){
+function buildVan(col){
   const g=new THREE.Group();
-  const t=mesh(new THREE.CylinderGeometry(r,r,w,30),tire()); t.rotation.x=Math.PI/2; g.add(t);
-  const hub=mesh(new THREE.CylinderGeometry(r*0.5,r*0.5,w+0.02,18),chrome()); hub.rotation.x=Math.PI/2; g.add(hub);
+  part(g,new RoundedBoxGeometry(4.9,1.7,2.0,6,0.34),paint(col),0,1.25,0);          // box body
+  part(g,new RoundedBoxGeometry(1.5,1.2,1.98,6,0.30),paint(col),2.05,0.78,0);      // sloped nose
+  const ws=part(g,new THREE.BoxGeometry(0.08,0.95,1.84),glass(),1.62,1.42,0);ws.rotation.z=-0.55; // windshield
+  part(g,new THREE.BoxGeometry(2.9,0.66,2.03),glass(),-0.1,1.62,0);                // side windows
+  part(g,new THREE.BoxGeometry(4.9,0.32,2.04),slate(),0,0.5,0);                    // sill
+  part(g,new THREE.BoxGeometry(0.12,0.42,1.7),chrome(),2.78,0.72,0);              // grille
+  part(g,new THREE.BoxGeometry(0.16,0.18,0.5),new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:0.5}),2.74,0.95,0.78);
+  part(g,new THREE.BoxGeometry(0.16,0.18,0.5),new THREE.MeshStandardMaterial({color:0xffffff,emissive:0xffffff,emissiveIntensity:0.5}),2.74,0.95,-0.78);
+  wheels4(g,WHEELS[1],[[1.55,0.92],[1.55,-0.92],[-1.55,0.92],[-1.55,-0.92]],0.45,0.32);
   return g;
 }
-function addWheels(group,store,positions,r,w){
-  positions.forEach(p=>{ const wh=makeWheel(r,w); wh.position.set(p[0],r,p[1]); group.add(wh); store.push(wh); });
+function buildSUV(col){
+  const g=new THREE.Group();
+  part(g,new RoundedBoxGeometry(4.9,1.15,2.18,5,0.16),matte(col),0,0.92,0);        // lower (boxy)
+  part(g,new RoundedBoxGeometry(3.1,1.0,2.0,5,0.14),matte(col),-0.2,1.62,0);       // upright cabin
+  part(g,new THREE.BoxGeometry(2.7,0.62,2.03),glass(),-0.15,1.66,0);               // greenhouse
+  const wf=part(g,new THREE.BoxGeometry(0.08,0.64,1.86),glass(),1.42,1.6,0);wf.rotation.z=-0.32;
+  part(g,new THREE.BoxGeometry(5.0,0.28,2.22),slate(),0,0.52,0);                   // armor sill
+  part(g,new THREE.BoxGeometry(0.5,0.62,2.3),slate(),2.4,0.66,0);                  // bull bar
+  part(g,new THREE.BoxGeometry(0.5,0.55,2.24),slate(),-2.4,0.62,0);               // rear
+  part(g,new THREE.BoxGeometry(2.9,0.1,1.9),slate(),-0.2,2.16,0);                  // roof rack
+  part(g,new THREE.CylinderGeometry(0.04,0.04,1.7,8),chrome(),1.4,2.5,0,Math.PI/2);// antenna bar
+  wheels4(g,WHEELS[2],[[1.6,1.0],[1.6,-1.0],[-1.6,1.0],[-1.6,-1.0]],0.6,0.42);
+  return g;
+}
+function buildJet(col){
+  const g=new THREE.Group();
+  const body=paint(col,0.22);
+  part(g,new THREE.CylinderGeometry(0.62,0.62,7.0,32),body,0,0,0,0,0,Math.PI/2);   // fuselage
+  part(g,new THREE.ConeGeometry(0.62,2.0,32),body,4.4,0,0,0,0,-Math.PI/2);         // nose
+  const tail=part(g,new THREE.ConeGeometry(0.62,2.4,32),body,-4.0,0.5,0,0,0,Math.PI/2);// upswept tail
+  part(g,new THREE.SphereGeometry(0.52,20,16),glass(),3.4,0.15,0);                 // cockpit
+  for(let i=0;i<7;i++) part(g,new THREE.BoxGeometry(0.2,0.16,0.04),glass(),2.0-i*0.55,0.18,0.61);
+  for(let i=0;i<7;i++) part(g,new THREE.BoxGeometry(0.2,0.16,0.04),glass(),2.0-i*0.55,0.18,-0.61);
+  // low swept wings
+  const wg=new THREE.BoxGeometry(2.0,0.12,5.2);
+  const wL=part(g,wg,body,-0.3,-0.25,2.5);wL.rotation.y=0.42;
+  const wR=part(g,wg,body,-0.3,-0.25,-2.5);wR.rotation.y=-0.42;
+  // T-tail
+  const ht=new THREE.BoxGeometry(1.1,0.1,3.0);
+  const hL=part(g,ht,body,-4.4,1.55,0.9);hL.rotation.y=0.32;
+  const hR=part(g,ht,body,-4.4,1.55,-0.9);hR.rotation.y=-0.32;
+  const vs=part(g,new THREE.BoxGeometry(1.7,1.7,0.14),body,-4.1,0.95,0);vs.rotation.z=0.62;
+  // rear engines
+  [0.95,-0.95].forEach(z=>{ part(g,new THREE.CylinderGeometry(0.36,0.32,1.6,24),slate(),-2.4,0.15,z,0,0,Math.PI/2);
+    part(g,new THREE.TorusGeometry(0.36,0.07,12,28),chrome(),-1.6,0.15,z,0,Math.PI/2,0); });
+  g.scale.setScalar(1.1);
+  return g;
 }
 
-function buildVan(){
-  const g=new THREE.Group();
-  g.add(mesh(new RoundedBoxGeometry(4.9,1.95,2.05,6,0.30),whitePaint(),0,1.18,0));
-  const nose=mesh(new RoundedBoxGeometry(0.9,1.25,2.0,5,0.26),whitePaint(),2.55,0.8,0); g.add(nose);
-  const vwsh=mesh(new THREE.BoxGeometry(0.08,0.82,1.78),glass(),2.18,1.55,0); vwsh.rotation.z=-0.42; g.add(vwsh); // windshield
-  g.add(mesh(new THREE.BoxGeometry(2.7,0.62,2.07),glass(),0.1,1.62,0));                     // side windows band
-  g.add(mesh(new THREE.BoxGeometry(4.9,0.34,2.07),slate(),0,0.46,0));                        // lower trim
-  g.add(mesh(new THREE.BoxGeometry(0.1,0.4,2.0),chrome(),2.99,0.8,0));                       // grille
-  addWheels(g,WHEELS[1],[[1.65,0.92],[1.65,-0.92],[-1.6,0.92],[-1.6,-0.92]],0.46,0.32);
-  return g;
-}
-function buildSUV(){
-  const g=new THREE.Group();
-  g.add(mesh(new RoundedBoxGeometry(4.85,1.18,2.12,6,0.26),whitePaint(),0,0.95,0));   // lower body
-  g.add(mesh(new RoundedBoxGeometry(3.0,0.95,1.96,6,0.24),whitePaint(),-0.15,1.62,0));// cabin
-  g.add(mesh(new THREE.BoxGeometry(2.5,0.6,1.99),glass(),-0.1,1.66,0));               // greenhouse glass
-  const swsh=mesh(new THREE.BoxGeometry(0.08,0.62,1.8),glass(),1.42,1.6,0); swsh.rotation.z=-0.5; g.add(swsh);
-  g.add(mesh(new THREE.BoxGeometry(4.85,0.3,2.16),slate(),0,0.5,0));                  // armor sill
-  g.add(mesh(new THREE.BoxGeometry(0.55,0.5,2.16),slate(),2.35,0.62,0));             // front bumper
-  g.add(mesh(new THREE.BoxGeometry(0.5,0.5,2.16),slate(),-2.3,0.62,0));             // rear bumper
-  addWheels(g,WHEELS[2],[[1.55,1.0],[1.55,-1.0],[-1.5,1.0],[-1.5,-1.0]],0.56,0.40);
-  return g;
-}
-function buildJet(){
-  const g=new THREE.Group();
-  // fuselage
-  const fus=mesh(new THREE.CylinderGeometry(0.62,0.62,7.2,32),whitePaint(),0,0,0); fus.rotation.z=Math.PI/2; g.add(fus);
-  const nose=mesh(new THREE.ConeGeometry(0.62,1.7,32),whitePaint(),4.2,0,0); nose.rotation.z=-Math.PI/2; g.add(nose);
-  const tailcone=mesh(new THREE.ConeGeometry(0.62,2.0,32),whitePaint(),-4.4,0.15,0); tailcone.rotation.z=Math.PI/2; g.add(tailcone);
-  // cockpit glass
-  g.add(mesh(new THREE.SphereGeometry(0.5,20,16),glass(),3.1,0.18,0));
-  // window stripe
-  for(let i=0;i<6;i++) g.add(mesh(new THREE.BoxGeometry(0.22,0.16,0.05),glass(),1.7-i*0.62,0.16,0.6));
-  // main wings (swept)
-  const wingGeo=new THREE.BoxGeometry(2.4,0.12,4.6);
-  const wl=mesh(wingGeo,whitePaint(),-0.4,-0.2,2.4); wl.rotation.y=0.34; g.add(wl);
-  const wr=mesh(wingGeo,whitePaint(),-0.4,-0.2,-2.4); wr.rotation.y=-0.34; g.add(wr);
-  // tailplane
-  const tp=new THREE.BoxGeometry(1.3,0.1,3.0);
-  const tpL=mesh(tp,whitePaint(),-4.0,0.35,1.0); tpL.rotation.y=0.3; g.add(tpL);
-  const tpR=mesh(tp,whitePaint(),-4.0,0.35,-1.0); tpR.rotation.y=-0.3; g.add(tpR);
-  // vertical stabiliser
-  const vs=mesh(new THREE.BoxGeometry(1.5,1.6,0.12),whitePaint(),-4.1,0.95,0); vs.rotation.z=0.5; g.add(vs);
-  // engines
-  [0.95,-0.95].forEach(z=>{ const e=mesh(new THREE.CylinderGeometry(0.34,0.30,1.5,24),slate(),-2.7,0.05,z); e.rotation.z=Math.PI/2; g.add(e);
-    const ring=mesh(new THREE.TorusGeometry(0.34,0.06,12,28),chrome(),-1.95,0.05,z); ring.rotation.y=Math.PI/2; g.add(ring); });
-  g.scale.setScalar(1.15);
+// ---------- repeating scenery layer ----------
+function makeLayer(spacing,factor,builder,range){
+  const g=new THREE.Group(); const items=[];
+  for(let i=range[0];i<range[1];i++){ const it=builder(i); it.position.x=i*spacing; g.add(it); items.push(it); }
+  scene.add(g); layers.push({g,spacing,factor});
   return g;
 }
 
@@ -330,102 +282,103 @@ try{
   renderer=new THREE.WebGLRenderer({canvas,antialias:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
   renderer.outputColorSpace=THREE.SRGBColorSpace;
-  renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.06;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=0.95;
   renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-  scene=new THREE.Scene(); scene.fog=new THREE.Fog(0xF4F1EC,26,80);
-  camera=new THREE.PerspectiveCamera(40,2,0.1,400);
+  scene=new THREE.Scene(); scene.fog=new THREE.Fog(0xbfc6cc,34,120);
+  camera=new THREE.PerspectiveCamera(38,2,0.1,500);
 
-  const sun=new THREE.DirectionalLight(0xffffff,2.0); sun.position.set(6,9,5); sun.castShadow=true;
-  sun.shadow.mapSize.set(2048,2048); sun.shadow.camera.near=1; sun.shadow.camera.far=50;
-  sun.shadow.camera.left=-14;sun.shadow.camera.right=14;sun.shadow.camera.top=14;sun.shadow.camera.bottom=-14; sun.shadow.bias=-0.0003;
-  scene.add(sun); scene.add(new THREE.HemisphereLight(0xffffff,0x6a6f73,0.35));
+  const sun=new THREE.DirectionalLight(0xfff3e2,2.2); sun.position.set(-8,10,6); sun.castShadow=true;
+  sun.shadow.mapSize.set(2048,2048); sun.shadow.camera.near=1; sun.shadow.camera.far=60;
+  sun.shadow.camera.left=-16;sun.shadow.camera.right=16;sun.shadow.camera.top=16;sun.shadow.camera.bottom=-16; sun.shadow.bias=-0.0003;
+  scene.add(sun); scene.add(new THREE.HemisphereLight(0xcfe0ff,0x4a4f55,0.4));
 
-  // road + ground
-  const rc=document.createElement('canvas'); rc.width=128; rc.height=512; const g2=rc.getContext('2d');
-  g2.fillStyle='#23272d'; g2.fillRect(0,0,128,512);
-  g2.fillStyle='rgba(244,241,236,0.16)'; g2.fillRect(10,0,3,512); g2.fillRect(115,0,3,512);
-  g2.fillStyle='rgba(244,241,236,0.5)'; for(let y=0;y<512;y+=92){ g2.fillRect(62,y,4,50); }
-  const roadTex=new THREE.CanvasTexture(rc); roadTex.wrapS=roadTex.wrapT=THREE.RepeatWrapping; roadTex.repeat.set(1,16); roadTex.colorSpace=THREE.SRGBColorSpace;
-  const road=mesh(new THREE.PlaneGeometry(7.5,170),new THREE.MeshStandardMaterial({map:roadTex,roughness:0.6,metalness:0}),0,0.001,0); road.rotation.x=-Math.PI/2; road.castShadow=false; road.receiveShadow=true; scene.add(road);
-  const ground=mesh(new THREE.PlaneGeometry(800,800),new THREE.MeshStandardMaterial({color:0xddd8cf,roughness:0.95}),0,0,0); ground.rotation.x=-Math.PI/2; ground.castShadow=false; ground.receiveShadow=true; scene.add(ground);
+  // ground (grass) + reflective asphalt road
+  const grass=new THREE.Mesh(new THREE.PlaneGeometry(900,900),new THREE.MeshStandardMaterial({color:0x4e5b46,roughness:1})); grass.rotation.x=-Math.PI/2; grass.position.y=-0.02; grass.receiveShadow=true; scene.add(grass);
+  const rc=document.createElement('canvas'); rc.width=512;rc.height=64;const g2=rc.getContext('2d');
+  g2.fillStyle='#1c2024';g2.fillRect(0,0,512,64); g2.fillStyle='rgba(244,241,236,.85)';for(let x=0;x<512;x+=72)g2.fillRect(x,29,40,6); g2.fillStyle='rgba(244,241,236,.5)';g2.fillRect(0,2,512,3);g2.fillRect(0,59,512,3);
+  const roadTex=new THREE.CanvasTexture(rc); roadTex.wrapS=roadTex.wrapT=THREE.RepeatWrapping; roadTex.repeat.set(30,1); roadTex.colorSpace=THREE.SRGBColorSpace; roadTex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  const road=new THREE.Mesh(new THREE.PlaneGeometry(360,9),new THREE.MeshStandardMaterial({map:roadTex,roughness:0.28,metalness:0.0,envMapIntensity:1.4})); road.rotation.x=-Math.PI/2; road.position.y=0; road.receiveShadow=true; scene.add(road);
 
+  // env
   const pmrem=new THREE.PMREMGenerator(renderer);
-  new RGBELoader().load('assets/env.hdr',(hdr)=>{ hdr.mapping=THREE.EquirectangularReflectionMapping; scene.environment=pmrem.fromEquirectangular(hdr).texture; scene.background=hdr; done(); },undefined,()=>{ scene.background=new THREE.Color(0xF4F1EC); done(); });
+  new RGBELoader().load('assets/env.hdr',(hdr)=>{ hdr.mapping=THREE.EquirectangularReflectionMapping; scene.environment=pmrem.fromEquirectangular(hdr).texture; scene.background=hdr; done(); },undefined,()=>{ scene.background=new THREE.Color(0xbfc6cc); done(); });
 
-  // car (real, recolored white)
+  // car (real) -> recolor Nardo grey
   const draco=new DRACOLoader(); draco.setDecoderPath('./vendor/jsm/libs/draco/gltf/');
-  const loader=new GLTFLoader(); loader.setDRACOLoader(draco);
-  loader.load('assets/ferrari.glb',(gltf)=>{
-    const car=gltf.scene; car.rotation.y=Math.PI/2;
-    car.traverse(o=>{ if(o.isMesh){o.castShadow=true; if(o.material) o.material.envMapIntensity=1.1;} });
-    const body=car.getObjectByName('body'); if(body) body.material=whitePaint();
-    const gl=car.getObjectByName('glass'); if(gl) gl.material=glass();
-    ['wheel_fl','wheel_fr','wheel_rl','wheel_rr'].forEach(n=>{const w=car.getObjectByName(n); if(w) WHEELS[0].push(w);});
+  const gl=new GLTFLoader(); gl.setDRACOLoader(draco);
+  gl.load('assets/ferrari.glb',(g)=>{ const car=g.scene; car.rotation.y=Math.PI/2;
+    car.traverse(o=>{if(o.isMesh){o.castShadow=true;if(o.material)o.material.envMapIntensity=1.3;}});
+    const b=car.getObjectByName('body'); if(b)b.material=paint(0x9aa0a6,0.3);
+    const gg=car.getObjectByName('glass'); if(gg)gg.material=glass();
+    ['wheel_fl','wheel_fr','wheel_rl','wheel_rr'].forEach(n=>{const w=car.getObjectByName(n);if(w)WHEELS[0].push(w);});
     vehicles[0]=car; scene.add(car); done();
-  },undefined,()=>{ vehicles[0]=buildSUV(); scene.add(vehicles[0]); done(); }); // fallback
+  },undefined,()=>{ vehicles[0]=buildSUV(0x9aa0a6); scene.add(vehicles[0]); done(); });
 
-  vehicles[1]=buildVan();  scene.add(vehicles[1]);
-  vehicles[2]=buildSUV();  scene.add(vehicles[2]);
-  vehicles[3]=buildJet();  scene.add(vehicles[3]);
+  vehicles[1]=buildVan(0x0c0d10); scene.add(vehicles[1]);   // black VIP van
+  vehicles[2]=buildSUV(0x121417); scene.add(vehicles[2]);   // black security SUV
+  vehicles[3]=buildJet(0xeef0f0); scene.add(vehicles[3]);   // white jet
 
-  // framing per vehicle: camera distance, height, look-at y, vehicle y offset
-  const FRAME=[{d:6.4,h:1.7,ty:0.55,vy:0},{d:8.2,h:2.3,ty:1.05,vy:0},{d:8.4,h:2.4,ty:1.1,vy:0},{d:18,h:4.6,ty:1.2,vy:1.2}];
+  // scenery layers (parallax, scroll -X)
+  makeLayer(13,1.0,(i)=>{ const g=new THREE.Group(); // guardrail + lamp posts (near, far side)
+    const rail=part(g,new THREE.BoxGeometry(13,0.18,0.1),slate(),0,0.7,-5.6);
+    part(g,new THREE.CylinderGeometry(0.06,0.06,0.7,8),slate(),-6,0.35,-5.6);
+    const pole=part(g,new THREE.CylinderGeometry(0.08,0.1,6,10),new THREE.MeshStandardMaterial({color:0x6b7178,roughness:0.6,metalness:0.4}),-5,3,6.5);
+    part(g,new THREE.BoxGeometry(2.2,0.12,0.4),slate(),-4,6,6.5);
+    return g; },[-4,16]);
+  makeLayer(11,0.7,(i)=>{ const g=new THREE.Group(); // trees (mid, muted, further)
+    const h=3.0+(i%3)*1.2; const z=15+(i%3)*6;
+    part(g,new THREE.CylinderGeometry(0.12,0.18,1.2,7),new THREE.MeshStandardMaterial({color:0x2b241c,roughness:1}),0,0.6,z);
+    part(g,new THREE.ConeGeometry(0.95,h,9),new THREE.MeshStandardMaterial({color:0x303a2c,roughness:1}),0,1.1+h/2,z);
+    return g; },[-6,20]);
+  // distant landscape comes from the HDRI background (no procedural hills)
 
-  function setOpacity(group,o){ if(!group)return; group.visible=o>0.004; group.traverse(n=>{ if(n.material){ (Array.isArray(n.material)?n.material:[n.material]).forEach(m=>{ m.transparent=o<0.997; m.opacity=o; m.depthWrite=o>0.5; }); } }); }
-  function done(){ loaded++; if(loaded>=2 && !failed){ ready=true; loadingEl&&loadingEl.classList.add('hide'); resize(); requestAnimationFrame(loop); } } // env + car
+  const FRAME=[{d:10,h:2.2,x:-3.2,ty:0.7,by:0},{d:12,h:2.7,x:-3.6,ty:1.1,by:0},{d:12.5,h:2.9,x:-3.6,ty:1.25,by:0},{d:26,h:6.2,x:-7,ty:2.2,by:1.2}];
+  function setOpacity(o,v){ if(!o)return; o.visible=v>0.004; o.traverse(n=>{if(n.material){(Array.isArray(n.material)?n.material:[n.material]).forEach(m=>{m.transparent=v<0.997;m.opacity=v;m.depthWrite=v>0.5;});}}); }
+  function done(){ loaded++; if(loaded>=2&&!failed){ ready=true; loadingEl&&loadingEl.classList.add('hide'); resize(); requestAnimationFrame(loop); } }
   function resize(){ const r=canvas.getBoundingClientRect(); renderer.setSize(r.width,r.height,false); camera.aspect=r.width/Math.max(1,r.height); camera.updateProjectionMatrix(); }
-
-  let curIdx=-1;
-  function setService(i){
-    const s=SERVICES[i];
-    svc.classList.add('swap');
-    setTimeout(()=>{ svcNum.textContent=s.num; svcTitle.textContent=s.title; svcSub.textContent=s.sub; svcDesc.textContent=s.desc;
-      svcFeat.innerHTML=s.feat.map(f=>'<span>'+f+'</span>').join(''); stageVeh.textContent=s.veh; svc.classList.remove('swap'); },200);
-    dots.forEach((d,k)=>d.classList.toggle('on',k===i));
-  }
-  function lerp(a,b,t){return a+(b-a)*t;}
+  const lerp=(a,b,t)=>a+(b-a)*t, ease=t=>t*t*(3-2*t);
+  let cur=-1;
+  function setService(i){ svc.classList.add('swap'); setTimeout(()=>{const s=SERVICES[i];svcNum.textContent=s.num;svcTitle.textContent=s.title;svcSub.textContent=s.sub;svcDesc.textContent=s.desc;svcFeat.innerHTML=s.feat.map(f=>'<span>'+f+'</span>').join('');stageVeh.textContent=s.veh;svc.classList.remove('swap');},190); dots.forEach((d,k)=>d.classList.toggle('on',k===i)); }
 
   function loop(){
-    if(failed) return;
-    requestAnimationFrame(loop);
-    const rect=track.getBoundingClientRect();
-    const total=track.offsetHeight-innerHeight;
+    if(failed) return; requestAnimationFrame(loop);
+    const rect=track.getBoundingClientRect(); const total=track.offsetHeight-innerHeight;
     const p=total>0?Math.min(Math.max(-rect.top/total,0),1):0;
-    const seg=Math.min(3.9999,p*4);
-    const idx=Math.floor(seg), frac=seg-idx;
-    if(idx!==curIdx){ curIdx=idx; setService(idx); }
-    // animated speed number toward target
-    const tgt=SERVICES[idx].speed; const shown=+stageSpeed.dataset.v|| SERVICES[0].speed;
-    const nv=shown+(tgt-shown)*0.12; stageSpeed.dataset.v=nv; stageSpeed.textContent=String(Math.round(nv)).padStart(3,'0');
-    hint&&(hint.style.opacity=p>0.015?'0':'1');
+    const seg=Math.min(3.9999,p*4); const idx=Math.floor(seg); let frac=seg-idx;
+    if(idx!==cur){cur=idx;setService(idx);}
+    // animated speed
+    const tgt=SERVICES[idx].speed, shown=+stageSpeed.dataset.v||90; const nv=shown+(tgt-shown)*0.1; stageSpeed.dataset.v=nv; stageSpeed.textContent=String(Math.round(nv)).padStart(3,'0');
+    hint&&(hint.style.opacity=p>0.02?'0':'1');
     if(rect.bottom<0||rect.top>innerHeight) return;
 
-    // crossfade vehicles near integer boundary
-    const FADE=0.14;
-    for(let k=0;k<4;k++) setOpacity(vehicles[k], k===idx?1:0);
-    if(frac>1-FADE && idx<3){ const t=(frac-(1-FADE))/FADE; setOpacity(vehicles[idx],1-t); setOpacity(vehicles[idx+1],t); }
+    // ---- warp transition: outgoing exits right, incoming enters left ----
+    const TR=0.18; let warp=0;
+    for(let k=0;k<4;k++){ if(vehicles[k]){ vehicles[k].position.x=0; setOpacity(vehicles[k], k===idx?1:0); } }
+    if(frac>1-TR && idx<3){
+      const t=ease((frac-(1-TR))/TR); warp=Math.sin(t*Math.PI);
+      if(vehicles[idx]){ vehicles[idx].position.x=t*24; setOpacity(vehicles[idx],1-Math.max(0,(t-0.4)/0.6)); }
+      if(vehicles[idx+1]){ vehicles[idx+1].position.x=-24*(1-t); setOpacity(vehicles[idx+1], Math.max(0,(t-0.4)/0.6)); }
+    }
+    flash.style.opacity=(warp*0.9).toFixed(3); streaks.style.opacity=(warp*0.7).toFixed(3);
 
-    // framing (interpolate toward next during fade for smoothness)
-    const f0=FRAME[idx], f1=FRAME[Math.min(3,idx+1)];
-    const tF=(frac>1-FADE&&idx<3)?(frac-(1-FADE))/FADE:0;
-    const d=lerp(f0.d,f1.d,tF), h=lerp(f0.h,f1.h,tF), ty=lerp(f0.ty,f1.ty,tF);
-    const ang=1.02 + seg*0.16 + Math.sin(seg*1.3)*0.04;
-    camera.position.set(Math.cos(ang)*d, h, Math.sin(ang)*d);
-    camera.lookAt(0,ty,0);
+    // ---- camera framing (interp toward next during warp) ----
+    const f0=FRAME[idx], f1=FRAME[Math.min(3,idx+1)]; const tF=(frac>1-TR&&idx<3)?ease((frac-(1-TR))/TR):0;
+    const d=lerp(f0.d,f1.d,tF), h=lerp(f0.h,f1.h,tF), cx=lerp(f0.x,f1.x,tF), ty=lerp(f0.ty,f1.ty,tF);
+    camera.position.set(cx,h,d); camera.lookAt(0,ty,0);
 
-    // motion: wheels + road; jet lifts in stage 4
-    const dist=seg*34;
-    for(let k=0;k<4;k++){ const vy=vehicles[k]&&vehicles[k].position; }
-    [0,1,2].forEach(k=>WHEELS[k].forEach(w=>w.rotation.z=-dist*1.1));
-    road.material.map.offset.y=-dist*0.5;
-    // jet altitude
-    if(vehicles[3]){ const climb=idx>=3?frac:0; vehicles[3].position.y=1.0 + climb*climb*2.4; vehicles[3].rotation.z=climb*0.12; }
+    // ---- world motion (scenery scroll + wheels), faster during warp ----
+    const speedK=1+warp*6; const worldX=(seg*26)*1; // base distance
+    const move=worldX + warp*60;
+    layers.forEach(L=>{ L.g.position.x = -(((move*L.factor)% L.spacing)); });
+    roadTex.offset.x = move*0.06;
+    [0,1,2].forEach(k=>WHEELS[k].forEach(w=>w.rotation.z=-move*0.5));
+
+    // ---- jet lift-off at the end ----
+    if(vehicles[3]){ const climb=idx>=3?ease(frac):0; vehicles[3].position.y=1.0+climb*climb*4.0; vehicles[3].rotation.z=climb*0.16; if(idx>=3)vehicles[3].position.x+=climb*6; }
+
     renderer.render(scene,camera);
   }
-
-  // init service features for stage 0
-  svcFeat.innerHTML=SERVICES[0].feat.map(f=>'<span>'+f+'</span>').join('');
-  addEventListener('resize',()=>{ if(ready) resize(); },{passive:true});
+  addEventListener('resize',()=>{ if(ready)resize(); },{passive:true});
   setTimeout(()=>{ if(!ready&&!failed) fail('Chargement 3D trop long'); },25000);
 }catch(e){ fail('WebGL indisponible'); }
 </script>
