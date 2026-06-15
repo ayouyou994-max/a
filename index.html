@@ -16,6 +16,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/jsm/" } }
+</script>
+
 <style>
 /* ============================================================
    GANTRY — design tokens
@@ -381,7 +385,20 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);margin-top:clamp(
 .journey{position:relative;background:linear-gradient(180deg,var(--bg),#04060A)}
 .journey-track{height:380vh;position:relative}
 .journey-sticky{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden}
-#journeyCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+#gl3d{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block}
+.gl-loading{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;gap:12px;font-family:var(--mono);font-size:13px;color:var(--text-dim);background:var(--bg);transition:opacity .7s}
+.gl-loading.hide{opacity:0;pointer-events:none}
+.gl-loading .spin{width:18px;height:18px;border:2px solid var(--line-strong);border-top-color:var(--accent);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.det-box{position:absolute;z-index:2;left:50%;top:50%;width:130px;height:90px;transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .4s}
+.det-box.on{opacity:1}
+.det-box .b{position:absolute;width:15px;height:15px;border:2px solid var(--accent)}
+.det-box .b.tl{left:-1px;top:-1px;border-right:0;border-bottom:0}
+.det-box .b.tr{right:-1px;top:-1px;border-left:0;border-bottom:0}
+.det-box .b.bl{left:-1px;bottom:-1px;border-right:0;border-top:0}
+.det-box .b.br{right:-1px;bottom:-1px;border-left:0;border-top:0}
+.det-tag{position:absolute;top:-21px;left:-1px;background:var(--accent);color:var(--accent-ink);font-family:var(--mono);font-weight:700;font-size:10px;padding:2px 6px;white-space:nowrap}
+.det-tele{position:absolute;bottom:-21px;right:-1px;font-family:var(--mono);font-size:10px;color:var(--cyan);white-space:nowrap;text-shadow:0 1px 3px #000}
 .journey-overlay{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;pointer-events:none}
 .journey-head{padding:clamp(74px,9vw,120px) 24px 0}
 .journey-head .wrap,.journey-rail .wrap{max-width:var(--container);margin-inline:auto;width:100%}
@@ -551,17 +568,23 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);margin-top:clamp(
 </section>
 
 <!-- ==================== SCROLL-DRIVEN JOURNEY ==================== -->
-<section class="journey" id="journey" aria-label="Scroll to drive a trailer from gate to dock">
+<section class="journey" id="journey" aria-label="Real-time 3D asset tracking">
   <div class="journey-track" id="journeyTrack">
     <div class="journey-sticky">
-      <canvas id="journeyCanvas" aria-hidden="true"></canvas>
+      <canvas id="gl3d" aria-hidden="true"></canvas>
+      <div class="gl-loading" id="glLoading"><span class="spin"></span> Initialisation 3D…</div>
+      <div class="det-box" id="detBox" aria-hidden="true">
+        <span class="b tl"></span><span class="b tr"></span><span class="b bl"></span><span class="b br"></span>
+        <span class="det-tag" id="detTag">ASSET · 0.99</span>
+        <span class="det-tele" id="detTele">LOCK-ON</span>
+      </div>
       <div class="journey-overlay">
         <div class="journey-head">
           <div class="wrap">
-            <span class="kicker">◢ SCROLL TO DRIVE — GATE TO DOCK</span>
+            <span class="kicker">◢ REAL-TIME 3D — COMPUTER-VISION TRACKING</span>
             <div class="journey-stage">
-              <h2 id="stageTitle">A trailer hits the gate.</h2>
-              <p id="stageDesc">Scroll down to drive it through the yard — GANTRY tracks every meter, in real time.</p>
+              <h2 id="stageTitle">Every asset, in 3D.</h2>
+              <p id="stageDesc">Scroll to move through the scene — GANTRY locks on and tracks the asset in real time, with the world rendered live.</p>
             </div>
           </div>
         </div>
@@ -569,10 +592,10 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);margin-top:clamp(
           <div class="wrap">
             <div class="rail-progress"><span id="railFill"></span></div>
             <div class="rail-nodes">
-              <div class="node" data-i="0"><b>01</b>Gate</div>
-              <div class="node" data-i="1"><b>02</b>Vision&nbsp;scan</div>
-              <div class="node" data-i="2"><b>03</b>Yard</div>
-              <div class="node" data-i="3"><b>04</b>Dock</div>
+              <div class="node" data-i="0"><b>01</b>Detect</div>
+              <div class="node" data-i="1"><b>02</b>Classify</div>
+              <div class="node" data-i="2"><b>03</b>Track</div>
+              <div class="node" data-i="3"><b>04</b>Route</div>
             </div>
           </div>
         </div>
@@ -1284,6 +1307,106 @@ footer{border-top:1px solid var(--line);background:var(--bg-2);margin-top:clamp(
   })();
 
 })();
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
+
+const track=document.getElementById('journeyTrack'), canvas=document.getElementById('gl3d');
+const loadingEl=document.getElementById('glLoading'), detBox=document.getElementById('detBox'),
+      detTele=document.getElementById('detTele'),
+      stageTitle=document.getElementById('stageTitle'), stageDesc=document.getElementById('stageDesc'),
+      railFill=document.getElementById('railFill'), hint=document.getElementById('scrollHint'),
+      stageEl=document.querySelector('.journey-stage'),
+      nodes=Array.from(document.querySelectorAll('.rail-nodes .node'));
+const stages=[
+  {t:"Detected the moment it arrives.",d:"Computer vision picks up the asset on sight and locks a live bounding box onto it — no tags, no manual check-in."},
+  {t:"Classified and inspected.",d:"Type, identity and condition are recognized in real time, then written to the digital twin."},
+  {t:"Tracked to the meter.",d:"GANTRY follows the asset continuously across the yard — position, heading and dwell, always live."},
+  {t:"Routed to its slot.",d:"Agentic dispatch assigns the optimal destination and guides the move. Throughput up, dwell down."}
+];
+let renderer,scene,camera,car,road,ready=false,failed=false,inView=true,loaded=0;
+const wheels=[], carPos=new THREE.Vector3(), tmp=new THREE.Vector3();
+function fail(m){ failed=true; if(loadingEl){loadingEl.classList.remove('hide');loadingEl.innerHTML='⚠ '+(m||'3D indisponible');} }
+
+try{
+  renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+  renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  scene=new THREE.Scene(); scene.fog=new THREE.Fog(0x0a0e13,22,75);
+  camera=new THREE.PerspectiveCamera(42,2,0.1,400);
+
+  const sun=new THREE.DirectionalLight(0xfff1d8,2.4); sun.position.set(7,8,3); sun.castShadow=true;
+  sun.shadow.mapSize.set(2048,2048); sun.shadow.camera.near=1; sun.shadow.camera.far=42;
+  sun.shadow.camera.left=-7; sun.shadow.camera.right=7; sun.shadow.camera.top=7; sun.shadow.camera.bottom=-7; sun.shadow.bias=-0.0003;
+  scene.add(sun); scene.add(new THREE.HemisphereLight(0xbfd4ff,0x202024,0.25));
+
+  // procedural road
+  const rc=document.createElement('canvas'); rc.width=128; rc.height=512; const g=rc.getContext('2d');
+  g.fillStyle='#0b0e13'; g.fillRect(0,0,128,512);
+  g.fillStyle='rgba(255,255,255,0.08)'; g.fillRect(8,0,4,512); g.fillRect(116,0,4,512);
+  g.fillStyle='rgba(198,255,61,0.6)'; for(let y=0;y<512;y+=88){ g.fillRect(61,y,6,46); }
+  const roadTex=new THREE.CanvasTexture(rc); roadTex.wrapS=roadTex.wrapT=THREE.RepeatWrapping;
+  roadTex.repeat.set(1,14); roadTex.colorSpace=THREE.SRGBColorSpace; roadTex.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  road=new THREE.Mesh(new THREE.PlaneGeometry(7,140), new THREE.MeshStandardMaterial({map:roadTex,roughness:0.5,metalness:0}));
+  road.rotation.x=-Math.PI/2; road.receiveShadow=true; scene.add(road);
+  const ground=new THREE.Mesh(new THREE.PlaneGeometry(600,600), new THREE.MeshStandardMaterial({color:0x05070a,roughness:0.35,metalness:0}));
+  ground.rotation.x=-Math.PI/2; ground.position.y=-0.012; ground.receiveShadow=true; scene.add(ground);
+
+  // HDRI environment + photographic background
+  const pmrem=new THREE.PMREMGenerator(renderer);
+  new RGBELoader().load('assets/env.hdr',(hdr)=>{
+    hdr.mapping=THREE.EquirectangularReflectionMapping;
+    scene.environment=pmrem.fromEquirectangular(hdr).texture;
+    scene.background=hdr;
+    done();
+  },undefined,()=>{ scene.background=new THREE.Color(0x0a0e13); done(); });
+
+  // photoreal vehicle (Draco-compressed glTF)
+  const draco=new DRACOLoader(); draco.setDecoderPath('./vendor/jsm/libs/draco/gltf/');
+  const loader=new GLTFLoader(); loader.setDRACOLoader(draco);
+  loader.load('assets/ferrari.glb',(gltf)=>{
+    car=gltf.scene; car.rotation.y=Math.PI/2;
+    car.traverse(o=>{ if(o.isMesh){ o.castShadow=true; if(o.material) o.material.envMapIntensity=1.2; } });
+    const body=car.getObjectByName('body');
+    if(body) body.material=new THREE.MeshPhysicalMaterial({color:0x171a1f,metalness:1,roughness:0.34,clearcoat:1,clearcoatRoughness:0.05,envMapIntensity:2.2});
+    const glass=car.getObjectByName('glass');
+    if(glass) glass.material=new THREE.MeshPhysicalMaterial({color:0x0c0e11,metalness:0.2,roughness:0.08,transparent:true,opacity:0.62,envMapIntensity:2.0});
+    ['wheel_fl','wheel_fr','wheel_rl','wheel_rr'].forEach(n=>{const w=car.getObjectByName(n); if(w) wheels.push(w);});
+    scene.add(car); done();
+  },undefined,()=>fail('Modèle 3D non chargé'));
+
+  function done(){ loaded++; if(loaded>=2 && !failed){ ready=true; loadingEl&&loadingEl.classList.add('hide'); resize(); requestAnimationFrame(loop); } }
+  function resize(){ const r=canvas.getBoundingClientRect(); renderer.setSize(r.width,r.height,false); camera.aspect=r.width/Math.max(1,r.height); camera.updateProjectionMatrix(); }
+
+  let cur=-1;
+  function setStage(i){ stageEl&&stageEl.classList.add('swap'); setTimeout(()=>{ stageTitle&&(stageTitle.textContent=stages[i].t); stageDesc&&(stageDesc.textContent=stages[i].d); stageEl&&stageEl.classList.remove('swap'); },190); nodes.forEach(n=>n.classList.toggle('active',(+n.dataset.i)<=i)); detTele&&(detTele.textContent=['LOCK-ON','CLASSIFY','TRACKING','ROUTING'][i]); }
+
+  function loop(){
+    if(failed) return;
+    requestAnimationFrame(loop);
+    const rect=track.getBoundingClientRect();
+    const total=track.offsetHeight-innerHeight;
+    const p=total>0?Math.min(Math.max(-rect.top/total,0),1):0;
+    const si=p<0.25?0:p<0.52?1:p<0.8?2:3; if(si!==cur){cur=si;setStage(si);}
+    railFill&&(railFill.style.width=(p*100).toFixed(1)+'%');
+    hint&&(hint.style.opacity=p>0.015?'0':'0.8');
+    detBox&&detBox.classList.toggle('on',p>0.04);
+    if(rect.bottom<0 || rect.top>innerHeight) return; // off-screen: skip GPU work, keep overlay in sync
+    const ang=THREE.MathUtils.degToRad(58+p*74), rad=7.4-p*1.6, h=1.45+Math.sin(p*Math.PI)*0.85;
+    camera.position.set(Math.cos(ang)*rad,h,Math.sin(ang)*rad); camera.lookAt(0,0.5,0);
+    const dist=p*42; wheels.forEach(w=>w.rotation.x=-dist*1.15); if(road) road.material.map.offset.y=-dist*0.22;
+    if(car){ car.getWorldPosition(carPos); carPos.y+=0.5; tmp.copy(carPos).project(camera); const r=canvas.getBoundingClientRect(); const sz=Math.max(92,180-(camera.position.distanceTo(carPos)-6)*15); detBox.style.left=((tmp.x*0.5+0.5)*r.width)+'px'; detBox.style.top=((-tmp.y*0.5+0.5)*r.height)+'px'; detBox.style.width=sz+'px'; detBox.style.height=(sz*0.6)+'px'; }
+    renderer.render(scene,camera);
+  }
+  addEventListener('resize',()=>{ if(ready) resize(); },{passive:true});
+  setTimeout(()=>{ if(!ready&&!failed) fail('Chargement 3D trop long'); },25000);
+}catch(e){ fail('WebGL indisponible'); }
 </script>
 </body>
 </html>

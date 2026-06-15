@@ -30,6 +30,10 @@ jobs:
           cp index.html _site/
           # SPA/static safety: serve index.html for unknown paths
           cp index.html _site/404.html
+          # 3D runtime + assets (Three.js, Draco, glTF model, HDRI)
+          cp -r vendor _site/vendor
+          cp -r assets _site/assets
+          touch _site/.nojekyll
 
       - name: Configure Pages (enables Pages if not already on)
         uses: actions/configure-pages@v5
