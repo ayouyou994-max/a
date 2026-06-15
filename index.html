@@ -204,7 +204,7 @@ SERVICES.forEach((s,i)=>{const d=document.createElement('div');d.className='d'+(
 const dots=[...dotsEl.children];
 svcFeat.innerHTML=SERVICES[0].feat.map(f=>'<span>'+f+'</span>').join('');
 
-let renderer,scene,camera,ready=false,failed=false,loaded=0;
+let renderer,scene,camera,ready=false,failed=false,loaded=0,sky;
 const vehicles=[],WHEELS=[[],[],[],[]],layers=[];
 function fail(m){failed=true;if(loadingEl){loadingEl.classList.remove('hide');loadingEl.textContent='⚠ '+(m||'3D indisponible');}}
 
@@ -284,7 +284,7 @@ try{
   renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=0.95;
   renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-  scene=new THREE.Scene(); scene.fog=new THREE.Fog(0xbfc6cc,34,120);
+  scene=new THREE.Scene(); scene.fog=new THREE.Fog(0xc9c4ba,42,160);
   camera=new THREE.PerspectiveCamera(38,2,0.1,500);
 
   const sun=new THREE.DirectionalLight(0xfff3e2,2.2); sun.position.set(-8,10,6); sun.castShadow=true;
@@ -301,7 +301,10 @@ try{
 
   // env
   const pmrem=new THREE.PMREMGenerator(renderer);
-  new RGBELoader().load('assets/env.hdr',(hdr)=>{ hdr.mapping=THREE.EquirectangularReflectionMapping; scene.environment=pmrem.fromEquirectangular(hdr).texture; scene.background=hdr; done(); },undefined,()=>{ scene.background=new THREE.Color(0xbfc6cc); done(); });
+  new RGBELoader().load('assets/env.hdr',(hdr)=>{ hdr.mapping=THREE.EquirectangularReflectionMapping; scene.environment=pmrem.fromEquirectangular(hdr).texture;
+    hdr.mapping=THREE.UVMapping; // reuse the same panorama as a rotating photographic sky dome
+    sky=new THREE.Mesh(new THREE.SphereGeometry(320,64,44), new THREE.MeshBasicMaterial({map:hdr,side:THREE.BackSide,fog:false}));
+    scene.add(sky); done(); },undefined,()=>{ scene.background=new THREE.Color(0xc8c8c4); done(); });
 
   // car (real) -> recolor Nardo grey
   const draco=new DRACOLoader(); draco.setDecoderPath('./vendor/jsm/libs/draco/gltf/');
@@ -319,18 +322,7 @@ try{
   vehicles[3]=buildJet(0xeef0f0); scene.add(vehicles[3]);   // white jet
 
   // scenery layers (parallax, scroll -X)
-  makeLayer(13,1.0,(i)=>{ const g=new THREE.Group(); // guardrail + lamp posts (near, far side)
-    const rail=part(g,new THREE.BoxGeometry(13,0.18,0.1),slate(),0,0.7,-5.6);
-    part(g,new THREE.CylinderGeometry(0.06,0.06,0.7,8),slate(),-6,0.35,-5.6);
-    const pole=part(g,new THREE.CylinderGeometry(0.08,0.1,6,10),new THREE.MeshStandardMaterial({color:0x6b7178,roughness:0.6,metalness:0.4}),-5,3,6.5);
-    part(g,new THREE.BoxGeometry(2.2,0.12,0.4),slate(),-4,6,6.5);
-    return g; },[-4,16]);
-  makeLayer(11,0.7,(i)=>{ const g=new THREE.Group(); // trees (mid, muted, further)
-    const h=3.0+(i%3)*1.2; const z=15+(i%3)*6;
-    part(g,new THREE.CylinderGeometry(0.12,0.18,1.2,7),new THREE.MeshStandardMaterial({color:0x2b241c,roughness:1}),0,0.6,z);
-    part(g,new THREE.ConeGeometry(0.95,h,9),new THREE.MeshStandardMaterial({color:0x303a2c,roughness:1}),0,1.1+h/2,z);
-    return g; },[-6,20]);
-  // distant landscape comes from the HDRI background (no procedural hills)
+  // Landscape = real 360° photo (panning sky dome) + reflective road. No fake props.
 
   const FRAME=[{d:10,h:2.2,x:-3.2,ty:0.7,by:0},{d:12,h:2.7,x:-3.6,ty:1.1,by:0},{d:12.5,h:2.9,x:-3.6,ty:1.25,by:0},{d:26,h:6.2,x:-7,ty:2.2,by:1.2}];
   function setOpacity(o,v){ if(!o)return; o.visible=v>0.004; o.traverse(n=>{if(n.material){(Array.isArray(n.material)?n.material:[n.material]).forEach(m=>{m.transparent=v<0.997;m.opacity=v;m.depthWrite=v>0.5;});}}); }
@@ -371,6 +363,7 @@ try{
     const move=worldX + warp*60;
     layers.forEach(L=>{ L.g.position.x = -(((move*L.factor)% L.spacing)); });
     roadTex.offset.x = move*0.06;
+    if(sky) sky.rotation.y = 0.7 - move*0.0016;
     [0,1,2].forEach(k=>WHEELS[k].forEach(w=>w.rotation.z=-move*0.5));
 
     // ---- jet lift-off at the end ----
