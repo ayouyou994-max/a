@@ -84,8 +84,11 @@ header.nav.scrolled{background:rgba(244,241,236,.7);backdrop-filter:blur(14px) s
 @media (prefers-reduced-motion:reduce){.scroll-hint{animation:none}}
 
 @media(max-width:760px){
-  .svc{left:16px;right:16px;width:auto;top:auto;bottom:150px;transform:none}.svc.swap{transform:translateY(16px)}.svc p{display:none}
-  .stage-ind{left:16px;bottom:88px}.dots{right:16px;bottom:90px}.dots .d .lab{display:none}
+  .svc{left:14px;right:14px;width:auto;top:auto;bottom:92px;transform:none;padding:16px 18px 14px;background:rgba(244,241,236,.5)}
+  .svc.swap{transform:translateY(14px)}.svc p{display:none}.svc .feat{display:none}.svc h2{font-size:2rem}.svc .num{font-size:11px}
+  .stage-ind{left:16px;bottom:22px}.stage-ind .spd{font-size:30px}
+  .dots{right:16px;bottom:26px}.dots .d .lab{display:none}
+  .scroll-hint{display:none}
 }
 
 .contact{background:var(--bg);padding:clamp(90px,13vw,180px) 0 clamp(70px,9vw,120px);border-top:1px solid var(--line-soft)}
@@ -343,24 +346,23 @@ try{
     hint&&(hint.style.opacity=p>0.02?'0':'1');
     if(rect.bottom<0||rect.top>innerHeight) return;
 
-    // ---- warp transition: outgoing exits right, incoming enters left ----
-    const TR=0.18; let warp=0;
+    // ---- morph transition: vehicles cross-dissolve in place, no flash ----
+    const TR=0.24;
     for(let k=0;k<4;k++){ if(vehicles[k]){ vehicles[k].position.x=0; setOpacity(vehicles[k], k===idx?1:0); } }
     if(frac>1-TR && idx<3){
-      const t=ease((frac-(1-TR))/TR); warp=Math.sin(t*Math.PI);
-      if(vehicles[idx]){ vehicles[idx].position.x=t*24; setOpacity(vehicles[idx],1-Math.max(0,(t-0.4)/0.6)); }
-      if(vehicles[idx+1]){ vehicles[idx+1].position.x=-24*(1-t); setOpacity(vehicles[idx+1], Math.max(0,(t-0.4)/0.6)); }
+      const t=ease((frac-(1-TR))/TR);
+      if(vehicles[idx]) setOpacity(vehicles[idx],1-t);
+      if(vehicles[idx+1]) setOpacity(vehicles[idx+1],t);
     }
-    flash.style.opacity=(warp*0.9).toFixed(3); streaks.style.opacity=(warp*0.7).toFixed(3);
+    flash.style.opacity='0'; streaks.style.opacity='0';
 
     // ---- camera framing (interp toward next during warp) ----
     const f0=FRAME[idx], f1=FRAME[Math.min(3,idx+1)]; const tF=(frac>1-TR&&idx<3)?ease((frac-(1-TR))/TR):0;
     const d=lerp(f0.d,f1.d,tF), h=lerp(f0.h,f1.h,tF), cx=lerp(f0.x,f1.x,tF), ty=lerp(f0.ty,f1.ty,tF);
     camera.position.set(cx,h,d); camera.lookAt(0,ty,0);
 
-    // ---- world motion (scenery scroll + wheels), faster during warp ----
-    const speedK=1+warp*6; const worldX=(seg*26)*1; // base distance
-    const move=worldX + warp*60;
+    // ---- world motion (scenery scroll + wheels) ----
+    const move=seg*26;
     layers.forEach(L=>{ L.g.position.x = -(((move*L.factor)% L.spacing)); });
     roadTex.offset.x = move*0.06;
     if(sky) sky.rotation.y = 0.7 - move*0.0016;
