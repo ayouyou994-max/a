@@ -47,6 +47,10 @@ header.nav.scrolled{background:rgba(244,241,236,.7);backdrop-filter:blur(14px) s
 .exp-track{height:600vh;position:relative}
 .exp-sticky{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:#cfd3d6}
 #scene{position:absolute;inset:0;width:100%;height:100%;z-index:0;display:block}
+.film{position:absolute;inset:0;z-index:0;display:none}
+.film.on{display:block}
+.film .fv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .05s linear}
+body.film-mode #scene{display:none}
 .vignette{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(125% 105% at 50% 42%, transparent 52%, rgba(10,12,14,.34))}
 .warp-streaks{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:repeating-linear-gradient(0deg, transparent 0 7px, rgba(255,255,255,.4) 7px 8px);mix-blend-mode:overlay;transition:opacity .12s linear}
 .warp-flash{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(120% 120% at 50% 50%, #ffffff, #F4F1EC)}
@@ -126,6 +130,12 @@ footer .legal{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap
   <div class="exp-track" id="expTrack">
     <div class="exp-sticky">
       <canvas id="scene" aria-hidden="true"></canvas>
+      <div class="film" id="film" aria-hidden="true">
+        <video class="fv" data-i="0" muted playsinline preload="auto"></video>
+        <video class="fv" data-i="1" muted playsinline preload="auto"></video>
+        <video class="fv" data-i="2" muted playsinline preload="auto"></video>
+        <video class="fv" data-i="3" muted playsinline preload="auto"></video>
+      </div>
       <div class="vignette"></div>
       <div class="warp-streaks" id="warpStreaks"></div>
       <div class="warp-flash" id="warpFlash"></div>
@@ -337,6 +347,7 @@ try{
 
   function loop(){
     if(failed) return; requestAnimationFrame(loop);
+    if(window.__filmMode){ canvas.style.display='none'; return; }
     const rect=track.getBoundingClientRect(); const total=track.offsetHeight-innerHeight;
     const p=total>0?Math.min(Math.max(-rect.top/total,0),1):0;
     const seg=Math.min(3.9999,p*4); const idx=Math.floor(seg); let frac=seg-idx;
@@ -376,6 +387,47 @@ try{
   addEventListener('resize',()=>{ if(ready)resize(); },{passive:true});
   setTimeout(()=>{ if(!ready&&!failed) fail('Chargement 3D trop long'); },25000);
 }catch(e){ fail('WebGL indisponible'); }
+</script>
+
+<script>
+/* FILM MODE — photoreal scroll-scrub. Auto-activates when assets/{car,van,suv,jet}.mp4 exist;
+   otherwise the real-time 3D above stays as fallback. */
+(function(){
+  var VID=['assets/car.mp4','assets/van.mp4','assets/suv.mp4','assets/jet.mp4'];
+  var film=document.getElementById('film'); if(!film) return;
+  var fvs=[].slice.call(film.querySelectorAll('.fv'));
+  var track=document.getElementById('expTrack');
+  var svc=document.getElementById('svc'),svcNum=document.getElementById('svcNum'),svcTitle=document.getElementById('svcTitle'),svcSub=document.getElementById('svcSub'),svcDesc=document.getElementById('svcDesc'),svcFeat=document.getElementById('svcFeat'),stageVeh=document.getElementById('stageVeh'),stageSpeed=document.getElementById('stageSpeed'),hint=document.getElementById('scrollHint');
+  var dots=[].slice.call(document.querySelectorAll('.dots .d'));
+  var SERVICES=[
+    {num:"01 / 04",title:"Location",sub:"Flotte privée premium",veh:"Audi RS3",speed:90,desc:"Berlines sport et grand tourisme d'exception, livrées où vous voulez, quand vous voulez.",feat:["Audi RS3","S-Class","BMW Série 7","Porsche","Bentley"]},
+    {num:"02 / 04",title:"Transport VIP",sub:"Chauffeurs d'élite",veh:"Mercedes Classe V",speed:110,desc:"Chauffeurs formés en école hôtelière, vans aménagés, discrétion absolue de porte à porte.",feat:["École hôtelière","Classe V aménagée","NDA","24/7"]},
+    {num:"03 / 04",title:"Protection",sub:"Sécurité rapprochée",veh:"SUV blindé",speed:130,desc:"Agents issus des forces spéciales, véhicules blindés VR6 / VR7, dispositifs sur-mesure.",feat:["Ex-forces spéciales","Blindage VR6/VR7","Close protection"]},
+    {num:"04 / 04",title:"Aviation",sub:"Jet privé",veh:"Jet privé",speed:850,desc:"Aviation d'affaires via opérateurs partenaires certifiés EASA. Partout, sans attente.",feat:["Opérateurs EASA","Vol à la demande","Empty legs"]}
+  ];
+  var ready=0,on=false,ease=function(t){return t*t*(3-2*t);};
+  fvs.forEach(function(v,i){ v.muted=true; v.playsInline=true; v.preload='auto';
+    v.addEventListener('loadeddata',function(){ ready++; if(ready>=4&&!on) enable(); });
+    v.addEventListener('error',function(){ if(!v.dataset.alt){ v.dataset.alt='1'; v.src=VID[i].replace(/\.mp4$/,'.webm'); v.load(); } });
+    v.src=VID[i]; v.load();
+  });
+  function enable(){ on=true; window.__filmMode=true; document.body.classList.add('film-mode'); film.classList.add('on'); var L=document.getElementById('sceneLoading'); if(L)L.classList.add('hide'); requestAnimationFrame(loop); }
+  var cur=-1;
+  function setService(i){ if(svc)svc.classList.add('swap'); setTimeout(function(){ var s=SERVICES[i]; if(svcNum)svcNum.textContent=s.num; if(svcTitle)svcTitle.textContent=s.title; if(svcSub)svcSub.textContent=s.sub; if(svcDesc)svcDesc.textContent=s.desc; if(svcFeat)svcFeat.innerHTML=s.feat.map(function(f){return '<span>'+f+'</span>';}).join(''); if(stageVeh)stageVeh.textContent=s.veh; if(svc)svc.classList.remove('swap'); },190); dots.forEach(function(d,k){d.classList.toggle('on',k===i);}); }
+  function seek(v,prog){ if(v.duration&&isFinite(v.duration)){ var tt=Math.min(v.duration-0.04,Math.max(0,prog)*v.duration); if(Math.abs(v.currentTime-tt)>0.03){ try{v.currentTime=tt;}catch(e){} } } }
+  function loop(){
+    if(!on) return; requestAnimationFrame(loop);
+    var rect=track.getBoundingClientRect(), total=track.offsetHeight-innerHeight;
+    var p=total>0?Math.min(Math.max(-rect.top/total,0),1):0;
+    var seg=Math.min(3.9999,p*4), idx=Math.floor(seg), frac=seg-idx;
+    if(idx!==cur){cur=idx;setService(idx);}
+    if(stageSpeed){ var tgt=SERVICES[idx].speed, shown=+stageSpeed.dataset.v||90, nv=shown+(tgt-shown)*0.1; stageSpeed.dataset.v=nv; stageSpeed.textContent=String(Math.round(nv)).padStart(3,'0'); }
+    if(hint) hint.style.opacity=p>0.02?'0':'1';
+    var TR=0.24;
+    for(var k=0;k<4;k++){ fvs[k].style.opacity=(k===idx)?'1':'0'; if(k===idx) seek(fvs[k],frac); }
+    if(frac>1-TR&&idx<3){ var t=ease((frac-(1-TR))/TR); fvs[idx].style.opacity=String(1-t); fvs[idx+1].style.opacity=String(t); seek(fvs[idx],frac); seek(fvs[idx+1],0.05); }
+  }
+})();
 </script>
 </body>
 </html>
