@@ -3,951 +3,736 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Houra Formation — Montez en compétences, transformez votre carrière</title>
-<meta name="description" content="Organisme de formation professionnelle certifié Qualiopi. Des formations 100% finançables (CPF, OPCO) en développement web, data & IA, marketing, design et cybersécurité. Apprenez en ligne avec un accompagnement jusqu'à la certification." />
-<meta property="og:title" content="Houra Formation — Apprenez les compétences qui font décoller votre carrière" />
+<title>Houra Formation — L'excellence, certifiée.</title>
+<meta name="description" content="Organisme de formation professionnelle certifié Qualiopi. Parcours certifiants 100% finançables (CPF, OPCO), animés par des experts. Discrétion, exigence, résultats." />
+<meta name="theme-color" content="#F4F1EC" />
+<meta property="og:title" content="Houra Formation — L'excellence, certifiée." />
 <meta property="og:description" content="Formations professionnelles certifiantes, 100% finançables, animées par des experts." />
-<meta property="og:type" content="website" />
 <script>document.documentElement.classList.add('js')</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<!-- Local Three.js (same stack as the main site) -->
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js", "three/addons/": "./vendor/jsm/" } }
+</script>
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         fontFamily: {
-          display: ['Lexend', 'system-ui', 'sans-serif'],
-          sans: ['Inter', 'system-ui', 'sans-serif'],
+          sans: ['"Inter Tight"', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
         },
         colors: {
-          brand: { 50:'#EEF2FF',100:'#E0E7FF',200:'#C7D2FE',300:'#A5B4FC',400:'#818CF8',500:'#6366F1',600:'#4F46E5',700:'#4338CA',800:'#3730A3',900:'#312E81',950:'#1E1B4B' },
-          accent: { 400:'#34D399',500:'#10B981',600:'#059669' },
+          paper:  '#F4F1EC',
+          paper2: '#ECE8E0',
+          pewter: '#CFD3D6',
+          ink:    '#0A0A0A',
+          slate:  '#2A3038',
+          dim:    '#5B5F63',
         },
-        boxShadow: {
-          glow: '0 20px 50px -12px rgba(79,70,229,.45)',
-          card: '0 1px 2px rgba(16,24,40,.05), 0 12px 30px -12px rgba(49,46,129,.18)',
-        },
+        maxWidth: { container: '1280px' },
       },
     },
   };
 </script>
 <style>
   :root { color-scheme: light; }
-  body { font-family: 'Inter', system-ui, sans-serif; }
-  h1,h2,h3,h4,.font-display { font-family: 'Lexend', system-ui, sans-serif; }
-  ::selection { background: #4F46E5; color: #fff; }
-  button { cursor: pointer; }
+  body { font-family:'Inter Tight', system-ui, sans-serif; }
+  ::selection { background:#0A0A0A; color:#F4F1EC; }
+  button { cursor:pointer; }
   a, button { -webkit-tap-highlight-color: transparent; }
-  :focus-visible { outline: 3px solid #6366F1; outline-offset: 2px; border-radius: 6px; }
+  :focus-visible { outline:2px solid #0A0A0A; outline-offset:3px; }
 
-  /* Animated gradient headline */
-  .gradient-text{
-    background:linear-gradient(90deg,#818CF8,#A78BFA,#34D399,#818CF8);
-    background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
-    animation:shine 7s linear infinite;
-  }
-  @keyframes shine{ to{ background-position:200% center } }
+  .mono { font-family:'JetBrains Mono', ui-monospace, monospace; letter-spacing:.14em; text-transform:uppercase; }
+  .hl { letter-spacing:-.03em; }
 
-  /* Aurora blobs */
-  @keyframes blob{
-    0%,100%{ transform:translate(0,0) scale(1) }
-    33%{ transform:translate(34px,-26px) scale(1.12) }
-    66%{ transform:translate(-26px,22px) scale(.92) }
-  }
-  .animate-blob{ animation:blob 16s ease-in-out infinite }
+  /* film grain + studio gradient for the hero */
+  .studio { background:
+      radial-gradient(120% 90% at 72% 30%, #E9E5DC 0%, #DEDAD1 38%, #CFCEC7 70%, #BFC2C2 100%); }
+  .grain { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E"); }
 
-  @keyframes floaty{ 0%,100%{ transform:translateY(0) } 50%{ transform:translateY(-14px) } }
-  .animate-float{ animation:floaty 6s ease-in-out infinite }
+  .hairline { border-color: rgba(10,10,10,.12); }
 
-  /* Logo marquee */
-  @keyframes marquee{ from{ transform:translateX(0) } to{ transform:translateX(-50%) } }
-  .marquee{ animation:marquee 28s linear infinite }
-  .marquee-mask{ -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent); mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent); }
-
-  /* Scroll reveal (only hides when JS is on) */
-  html.js .reveal{ opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1); }
+  /* scroll reveal */
+  html.js .reveal{ opacity:0; transform:translateY(22px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
   html.js .reveal.in{ opacity:1; transform:none; }
 
-  /* FAQ accordion */
-  .faq-panel{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
+  .faq-panel{ max-height:0; overflow:hidden; transition:max-height .45s cubic-bezier(.2,.7,.2,1); }
 
-  .grid-overlay{
-    background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
-    background-size:48px 48px;
-    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 78%);
-    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%,#000 40%,transparent 78%);
-  }
+  @keyframes bob{ 0%,100%{ transform:translate(-50%,0) } 50%{ transform:translate(-50%,6px) } }
+  .bob{ animation:bob 2s ease-in-out infinite; }
+  @keyframes spin{ to{ transform:rotate(360deg) } }
+  .spin{ animation:spin .9s linear infinite; }
+
+  #hero-canvas{ display:block; }
 
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
     html{ scroll-behavior:auto; }
     html.js .reveal{ opacity:1 !important; transform:none !important; }
   }
-  #hero-canvas{ display:block; }
 </style>
 </head>
 
-<body class="bg-white text-slate-800 antialiased overflow-x-hidden">
+<body class="bg-paper text-ink antialiased overflow-x-hidden">
 
-<a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-4 focus:left-4 focus:bg-brand-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Aller au contenu</a>
+<a href="#contenu" class="sr-only focus:not-sr-only focus:fixed focus:z-[100] focus:top-4 focus:left-4 focus:bg-ink focus:text-paper focus:px-4 focus:py-2">Aller au contenu</a>
 
-<!-- ============ HEADER ============ -->
-<header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300">
-  <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Navigation principale">
-    <div id="nav-inner" class="mt-3 flex items-center justify-between rounded-2xl border border-white/10 bg-brand-950/40 px-4 py-3 backdrop-blur-md transition-all duration-300">
-      <!-- Logo -->
-      <a href="#" class="flex items-center gap-2.5 group" aria-label="Houra Formation, accueil">
-        <span class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700 shadow-glow transition-transform group-hover:scale-105">
-          <svg class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/><path d="M22 10v6"/></svg>
-        </span>
-        <span class="text-lg font-display font-extrabold tracking-tight text-white">Houra<span class="text-brand-300">Formation</span></span>
-      </a>
-      <!-- Desktop links -->
-      <div class="hidden items-center gap-8 lg:flex">
-        <a href="#formations" class="text-sm font-medium text-slate-200 hover:text-white transition-colors">Formations</a>
-        <a href="#methode" class="text-sm font-medium text-slate-200 hover:text-white transition-colors">Méthode</a>
-        <a href="#tarifs" class="text-sm font-medium text-slate-200 hover:text-white transition-colors">Tarifs</a>
-        <a href="#temoignages" class="text-sm font-medium text-slate-200 hover:text-white transition-colors">Témoignages</a>
-        <a href="#faq" class="text-sm font-medium text-slate-200 hover:text-white transition-colors">FAQ</a>
-      </div>
-      <div class="hidden items-center gap-3 lg:flex">
-        <a href="#" class="text-sm font-semibold text-white/90 hover:text-white px-3 py-2">Connexion</a>
-        <a href="#tarifs" class="inline-flex items-center gap-2 rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-brand-700 shadow-lg shadow-brand-900/20 transition-all hover:-translate-y-0.5 hover:shadow-xl">
-          Commencer
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </a>
-      </div>
-      <!-- Mobile toggle -->
-      <button id="menu-btn" class="grid h-11 w-11 place-items-center rounded-xl text-white lg:hidden" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg id="icon-open" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-        <svg id="icon-close" class="hidden h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+<!-- ===================== NAV ===================== -->
+<header id="nav" class="fixed inset-x-0 top-0 z-50 border-b border-transparent transition-all duration-300">
+  <div class="mx-auto flex h-[66px] max-w-container items-center justify-between px-7">
+    <a href="#" class="text-[18px] font-bold tracking-[.16em]" aria-label="Houra Formation, accueil">HOURA&nbsp;<b class="font-extrabold">FORMATION</b></a>
+    <nav class="hidden items-center gap-8 md:flex" aria-label="Navigation principale">
+      <a href="#formations" class="mono text-[11px] text-ink/70 transition-colors hover:text-ink">Formations</a>
+      <a href="#methode" class="mono text-[11px] text-ink/70 transition-colors hover:text-ink">Méthode</a>
+      <a href="#tarifs" class="mono text-[11px] text-ink/70 transition-colors hover:text-ink">Tarifs</a>
+      <a href="#faq" class="mono text-[11px] text-ink/70 transition-colors hover:text-ink">FAQ</a>
+    </nav>
+    <div class="flex items-center gap-4">
+      <span class="mono hidden text-[11px] text-slate sm:inline">Qualiopi · CPF</span>
+      <a href="#tarifs" class="mono rounded-full border border-ink px-4 py-2 text-[11px] transition-colors hover:bg-ink hover:text-paper">Commencer</a>
+      <button id="menu-btn" class="grid h-10 w-10 place-items-center md:hidden" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg id="ic-o" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="ic-c" class="hidden h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
     </div>
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden lg:hidden">
-      <div class="mt-2 space-y-1 rounded-2xl border border-slate-200 bg-white p-3 shadow-card">
-        <a href="#formations" class="block rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-brand-50">Formations</a>
-        <a href="#methode" class="block rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-brand-50">Méthode</a>
-        <a href="#tarifs" class="block rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-brand-50">Tarifs</a>
-        <a href="#temoignages" class="block rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-brand-50">Témoignages</a>
-        <a href="#faq" class="block rounded-lg px-4 py-3 text-sm font-medium text-slate-700 hover:bg-brand-50">FAQ</a>
-        <a href="#tarifs" class="mt-2 block rounded-xl bg-brand-600 px-4 py-3 text-center text-sm font-semibold text-white">Commencer</a>
-      </div>
+  </div>
+  <div id="mobile-menu" class="hidden border-t border-ink/10 bg-paper/90 backdrop-blur md:hidden">
+    <div class="mx-auto max-w-container px-7 py-3">
+      <a href="#formations" class="mono block py-3 text-[12px]">Formations</a>
+      <a href="#methode" class="mono block py-3 text-[12px]">Méthode</a>
+      <a href="#tarifs" class="mono block py-3 text-[12px]">Tarifs</a>
+      <a href="#faq" class="mono block py-3 text-[12px]">FAQ</a>
     </div>
-  </nav>
+  </div>
 </header>
 
 <main id="contenu">
 
-  <!-- ============ HERO ============ -->
-  <section class="relative overflow-hidden bg-brand-950 pt-32 pb-24 sm:pt-40 sm:pb-32">
-    <!-- aurora blobs -->
-    <div class="pointer-events-none absolute inset-0 -z-0" aria-hidden="true">
-      <div class="absolute -top-24 -left-24 h-[28rem] w-[28rem] rounded-full bg-brand-500/40 blur-3xl animate-blob"></div>
-      <div class="absolute top-10 right-0 h-[26rem] w-[26rem] rounded-full bg-violet-500/30 blur-3xl animate-blob" style="animation-delay:-4s"></div>
-      <div class="absolute bottom-0 left-1/3 h-[24rem] w-[24rem] rounded-full bg-accent-500/25 blur-3xl animate-blob" style="animation-delay:-8s"></div>
-      <div class="absolute inset-0 grid-overlay"></div>
-    </div>
-
-    <!-- Interactive 3D layer (decorative, WebGL) -->
+  <!-- ===================== HERO ===================== -->
+  <section id="hero" class="studio relative h-[100svh] min-h-[640px] overflow-hidden">
     <canvas id="hero-canvas" class="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true"></canvas>
-    <div class="pointer-events-none absolute inset-0" aria-hidden="true" style="background:radial-gradient(ellipse 58% 50% at 50% 42%, rgba(11,16,32,.5), transparent 72%)"></div>
+    <div class="grain pointer-events-none absolute inset-0 opacity-[.05] mix-blend-multiply" aria-hidden="true"></div>
+    <!-- legibility scrim on the left -->
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true" style="background:linear-gradient(90deg, rgba(244,241,236,.86) 0%, rgba(244,241,236,.5) 34%, transparent 64%)"></div>
+    <div class="pointer-events-none absolute inset-0" aria-hidden="true" style="background:radial-gradient(130% 110% at 50% 44%, transparent 56%, rgba(10,12,14,.18))"></div>
 
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-3xl text-center">
-        <div class="reveal mx-auto inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-sm font-medium text-brand-100 backdrop-blur">
-          <svg class="h-4 w-4 text-accent-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-          Organisme certifié Qualiopi · Éligible CPF
-        </div>
+    <!-- loading chip -->
+    <div id="scene-loading" class="mono pointer-events-none absolute inset-0 z-20 flex items-center justify-center gap-3 bg-paper text-[12px] text-dim transition-opacity duration-700">
+      <span class="spin block h-4 w-4 rounded-full border-2 border-ink/20" style="border-top-color:#0A0A0A"></span> Chargement
+    </div>
 
-        <h1 class="reveal mt-6 text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-6xl" style="text-shadow:0 2px 40px rgba(11,16,32,.55)">
-          Apprenez les compétences qui font
-          <span class="gradient-text">décoller votre carrière</span>
-        </h1>
+    <!-- HUD corners -->
+    <div class="mono pointer-events-none absolute right-7 top-[90px] z-10 hidden text-right text-[10px] text-slate sm:block">
+      <div>HOURA · FORMATION</div>
+      <div class="mt-1 text-ink/40">48.8566° N — 2.3522° E</div>
+    </div>
+    <div class="mono pointer-events-none absolute bottom-8 right-7 z-10 hidden items-end gap-6 sm:flex">
+      <div><div class="text-[10px] text-dim">Réussite</div><div class="font-sans text-[28px] font-bold tabular-nums leading-none text-ink">98<span class="text-[14px] text-slate">%</span></div></div>
+      <div><div class="text-[10px] text-dim">Note</div><div class="font-sans text-[28px] font-bold tabular-nums leading-none text-ink">4,9<span class="text-[14px] text-slate">/5</span></div></div>
+    </div>
 
-        <p class="reveal mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
-          Des formations professionnelles <strong class="text-white">100% finançables</strong>, animées par des experts du métier. Formez-vous en ligne, à votre rythme, avec un accompagnement humain jusqu'à la certification.
-        </p>
-
-        <div class="reveal mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="#formations" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 px-7 py-4 text-base font-semibold text-white shadow-glow transition-all hover:-translate-y-0.5 hover:shadow-xl sm:w-auto">
-            Explorer les formations
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-          <a href="#methode" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur transition-all hover:bg-white/10 sm:w-auto">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4Z" fill="currentColor"/></svg>
-            Réserver un appel conseil
-          </a>
-        </div>
-
-        <!-- trust row -->
-        <div class="reveal mt-10 flex items-center justify-center gap-3 text-sm text-slate-300">
-          <div class="flex -space-x-2">
-            <span class="grid h-9 w-9 place-items-center rounded-full bg-brand-400 text-xs font-bold text-brand-950 ring-2 ring-brand-950">AR</span>
-            <span class="grid h-9 w-9 place-items-center rounded-full bg-accent-400 text-xs font-bold text-brand-950 ring-2 ring-brand-950">KB</span>
-            <span class="grid h-9 w-9 place-items-center rounded-full bg-violet-300 text-xs font-bold text-brand-950 ring-2 ring-brand-950">SL</span>
-            <span class="grid h-9 w-9 place-items-center rounded-full bg-amber-300 text-xs font-bold text-brand-950 ring-2 ring-brand-950">+</span>
+    <!-- content -->
+    <div class="relative z-10 flex h-full items-center">
+      <div class="mx-auto w-full max-w-container px-7">
+        <div class="max-w-[640px]">
+          <div class="reveal mono flex items-center gap-3 text-[12px] text-slate">
+            <span class="inline-block h-[6px] w-[6px] rounded-full bg-ink"></span>
+            Organisme certifié Qualiopi · Éligible CPF
           </div>
-          <span><strong class="text-white">12 000+</strong> apprenants · </span>
-          <span class="inline-flex items-center gap-1">
-            <svg class="h-4 w-4 text-amber-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <strong class="text-white">4,9/5</strong>
-          </span>
+          <h1 class="reveal hl mt-6 text-[13vw] font-extrabold leading-[0.92] sm:text-[clamp(3rem,7vw,6.5rem)]">
+            L'excellence,<br>certifiée.
+          </h1>
+          <p class="reveal mt-7 max-w-[46ch] text-[17px] leading-relaxed text-ink/70">
+            Des parcours professionnels d'exception — exigeants, certifiants, <span class="text-ink">100% finançables</span>. Formés par des experts, accompagnés jusqu'au résultat. Avec la discrétion d'une maison privée.
+          </p>
+          <div class="reveal mt-9 flex flex-col gap-3 sm:flex-row">
+            <a href="#formations" class="mono inline-flex items-center justify-center gap-2 bg-ink px-7 py-4 text-[12px] text-paper transition-transform hover:-translate-y-0.5">
+              Explorer les formations
+              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+            <a href="#contact" class="mono inline-flex items-center justify-center border border-ink px-7 py-4 text-[12px] transition-colors hover:bg-ink hover:text-paper">
+              Parler à un conseiller
+            </a>
+          </div>
         </div>
       </div>
     </div>
-    <!-- bottom fade to white -->
-    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent"></div>
+
+    <a href="#stats" class="bob mono absolute bottom-5 left-1/2 z-10 -translate-x-1/2 text-[10px] tracking-[.22em] text-ink">Défiler</a>
   </section>
 
-  <!-- ============ LOGOS MARQUEE ============ -->
-  <section class="border-y border-slate-100 bg-white py-10" aria-label="Ils nous font confiance">
-    <p class="mb-7 text-center text-sm font-semibold uppercase tracking-widest text-slate-400">Ils forment leurs équipes avec Houra</p>
-    <div class="marquee-mask relative overflow-hidden">
-      <div class="marquee flex w-max items-center gap-14 px-7 text-slate-400">
-        <!-- duplicated set for seamless loop -->
-        <span class="text-xl font-display font-bold">Nimbus</span>
-        <span class="text-xl font-display font-bold tracking-tight">VERTEX</span>
-        <span class="text-xl font-display font-semibold italic">Lumio</span>
-        <span class="text-xl font-display font-bold">Quanta</span>
-        <span class="text-xl font-display font-bold tracking-widest">ORBIT</span>
-        <span class="text-xl font-display font-semibold">Mosaïc</span>
-        <span class="text-xl font-display font-bold">Aälto</span>
-        <span class="text-xl font-display font-bold">Pulse</span>
-        <span class="text-xl font-display font-bold" aria-hidden="true">Nimbus</span>
-        <span class="text-xl font-display font-bold tracking-tight" aria-hidden="true">VERTEX</span>
-        <span class="text-xl font-display font-semibold italic" aria-hidden="true">Lumio</span>
-        <span class="text-xl font-display font-bold" aria-hidden="true">Quanta</span>
-        <span class="text-xl font-display font-bold tracking-widest" aria-hidden="true">ORBIT</span>
-        <span class="text-xl font-display font-semibold" aria-hidden="true">Mosaïc</span>
-        <span class="text-xl font-display font-bold" aria-hidden="true">Aälto</span>
-        <span class="text-xl font-display font-bold" aria-hidden="true">Pulse</span>
+  <!-- ===================== STATS ===================== -->
+  <section id="stats" class="border-y border-ink/10 bg-paper">
+    <div class="mx-auto grid max-w-container grid-cols-2 lg:grid-cols-4">
+      <div class="reveal border-r border-ink/10 p-8 lg:p-10">
+        <div class="font-sans text-[clamp(2.2rem,4vw,3.4rem)] font-bold tabular-nums leading-none" data-counter data-target="12000" data-suffix="+">0</div>
+        <div class="mono mt-3 text-[11px] text-dim">Apprenants formés</div>
       </div>
-    </div>
-  </section>
-
-  <!-- ============ STATS ============ -->
-  <section id="stats" class="bg-white py-16">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 gap-6 lg:grid-cols-4">
-        <div class="reveal rounded-2xl border border-slate-100 bg-gradient-to-b from-brand-50 to-white p-6 text-center shadow-card">
-          <div class="font-display text-4xl font-extrabold text-brand-700" data-counter data-target="12000" data-suffix="+">0</div>
-          <p class="mt-1 text-sm font-medium text-slate-500">Apprenants formés</p>
-        </div>
-        <div class="reveal rounded-2xl border border-slate-100 bg-gradient-to-b from-brand-50 to-white p-6 text-center shadow-card">
-          <div class="font-display text-4xl font-extrabold text-brand-700" data-counter data-target="150" data-suffix="+">0</div>
-          <p class="mt-1 text-sm font-medium text-slate-500">Formations certifiantes</p>
-        </div>
-        <div class="reveal rounded-2xl border border-slate-100 bg-gradient-to-b from-brand-50 to-white p-6 text-center shadow-card">
-          <div class="font-display text-4xl font-extrabold text-brand-700" data-counter data-target="98" data-suffix="%">0</div>
-          <p class="mt-1 text-sm font-medium text-slate-500">Taux de satisfaction</p>
-        </div>
-        <div class="reveal rounded-2xl border border-slate-100 bg-gradient-to-b from-brand-50 to-white p-6 text-center shadow-card">
-          <div class="font-display text-4xl font-extrabold text-brand-700" data-counter data-target="4.9" data-decimals="1" data-suffix="/5">0</div>
-          <p class="mt-1 text-sm font-medium text-slate-500">Note moyenne</p>
-        </div>
+      <div class="reveal border-ink/10 p-8 lg:border-r lg:p-10">
+        <div class="font-sans text-[clamp(2.2rem,4vw,3.4rem)] font-bold tabular-nums leading-none" data-counter data-target="150" data-suffix="+">0</div>
+        <div class="mono mt-3 text-[11px] text-dim">Formations certifiantes</div>
+      </div>
+      <div class="reveal border-r border-t border-ink/10 p-8 lg:border-t-0 lg:p-10">
+        <div class="font-sans text-[clamp(2.2rem,4vw,3.4rem)] font-bold tabular-nums leading-none" data-counter data-target="98" data-suffix="%">0</div>
+        <div class="mono mt-3 text-[11px] text-dim">Taux de satisfaction</div>
+      </div>
+      <div class="reveal border-t border-ink/10 p-8 lg:border-t-0 lg:p-10">
+        <div class="font-sans text-[clamp(2.2rem,4vw,3.4rem)] font-bold tabular-nums leading-none" data-counter data-target="4.9" data-decimals="1" data-suffix="/5">0</div>
+        <div class="mono mt-3 text-[11px] text-dim">Note moyenne</div>
       </div>
     </div>
   </section>
 
-  <!-- ============ FORMATIONS (BENTO) ============ -->
-  <section id="formations" class="bg-slate-50 py-20 sm:py-28">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="reveal mx-auto max-w-2xl text-center">
-        <span class="inline-block rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700">Nos domaines</span>
-        <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Des parcours pour chaque ambition</h2>
-        <p class="mt-4 text-lg text-slate-600">Choisissez parmi plus de 150 formations conçues avec des entreprises et alignées sur les besoins réels du marché.</p>
+  <!-- ===================== FORMATIONS ===================== -->
+  <section id="formations" class="bg-paper py-24 sm:py-32">
+    <div class="mx-auto max-w-container px-7">
+      <div class="reveal flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div>
+          <div class="mono text-[12px] text-slate">— Nos domaines</div>
+          <h2 class="hl mt-4 max-w-[18ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1]">Des parcours pour chaque ambition.</h2>
+        </div>
+        <p class="max-w-[40ch] text-ink/65">Plus de 150 formations conçues avec des entreprises et alignées sur les besoins réels du marché.</p>
       </div>
 
-      <div class="mt-14 grid gap-5 md:grid-cols-3 md:auto-rows-[200px]">
-        <!-- Featured big card -->
-        <article class="reveal group relative overflow-hidden rounded-3xl bg-brand-900 p-8 text-white md:col-span-2 md:row-span-2">
-          <div class="pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full bg-brand-500/40 blur-3xl transition-transform duration-500 group-hover:scale-125"></div>
-          <div class="pointer-events-none absolute -bottom-20 left-10 h-56 w-56 rounded-full bg-accent-500/25 blur-3xl"></div>
-          <div class="relative flex h-full flex-col">
-            <span class="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 ring-1 ring-white/20 backdrop-blur">
-              <svg class="h-6 w-6 text-accent-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-4 4"/></svg>
-            </span>
-            <span class="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full bg-accent-500/20 px-3 py-1 text-xs font-semibold text-accent-200">★ Le plus demandé</span>
-            <h3 class="mt-3 font-display text-2xl font-bold sm:text-3xl">Data &amp; Intelligence Artificielle</h3>
-            <p class="mt-2 max-w-md text-slate-300">Python, Machine Learning, LLM, data analyse et visualisation. Devenez le profil que toutes les entreprises s'arrachent.</p>
-            <div class="mt-auto flex items-center justify-between pt-6">
-              <span class="text-sm text-slate-300">24 formations · du débutant à l'expert</span>
-              <span class="inline-flex items-center gap-1 text-sm font-semibold text-white transition-transform group-hover:translate-x-1">Découvrir
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      <div class="mt-16 grid gap-px border border-ink/10 bg-ink/10 md:grid-cols-3 md:auto-rows-[210px]">
+        <!-- featured (ink) -->
+        <article data-tilt class="group relative overflow-hidden bg-ink p-8 text-paper md:col-span-2 md:row-span-2">
+          <div class="flex h-full flex-col">
+            <div class="mono flex items-center justify-between text-[11px] text-paper/50"><span>01</span><span>Le plus demandé</span></div>
+            <svg class="mt-6 h-7 w-7 text-paper" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-4 4"/></svg>
+            <h3 class="hl mt-4 text-[clamp(1.8rem,3vw,2.6rem)] font-bold">Data &amp; Intelligence Artificielle</h3>
+            <p class="mt-2 max-w-md text-paper/65">Python, Machine Learning, LLM, data analyse &amp; visualisation. Le profil que toutes les entreprises s'arrachent.</p>
+            <div class="mono mt-auto flex items-center justify-between pt-6 text-[11px] text-paper/60">
+              <span>24 formations · débutant → expert</span>
+              <span class="inline-flex items-center gap-1 text-paper transition-transform group-hover:translate-x-1">Découvrir
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </span>
             </div>
           </div>
         </article>
 
-        <!-- small cards -->
-        <article class="reveal group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-glow">
-          <span class="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
-          </span>
-          <h3 class="mt-4 font-display text-lg font-bold text-slate-900">Développement Web</h3>
-          <p class="mt-1 text-sm text-slate-500">React, Node, full-stack &amp; mobile.</p>
-          <p class="mt-3 text-xs font-semibold text-brand-600">32 formations →</p>
+        <article data-tilt class="group bg-paper p-7 transition-colors hover:bg-paper2">
+          <div class="mono text-[11px] text-dim">02</div>
+          <svg class="mt-5 h-6 w-6 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/></svg>
+          <h3 class="mt-4 text-[19px] font-semibold">Développement Web</h3>
+          <p class="mono mt-2 text-[11px] text-dim">32 formations</p>
         </article>
 
-        <article class="reveal group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-glow">
-          <span class="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14v-3Z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
-          </span>
-          <h3 class="mt-4 font-display text-lg font-bold text-slate-900">Marketing Digital</h3>
-          <p class="mt-1 text-sm text-slate-500">SEO, ads, growth &amp; contenu.</p>
-          <p class="mt-3 text-xs font-semibold text-brand-600">28 formations →</p>
+        <article data-tilt class="group bg-paper p-7 transition-colors hover:bg-paper2">
+          <div class="mono text-[11px] text-dim">03</div>
+          <svg class="mt-5 h-6 w-6 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 11 18-5v12L3 14v-3Z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+          <h3 class="mt-4 text-[19px] font-semibold">Marketing Digital</h3>
+          <p class="mono mt-2 text-[11px] text-dim">28 formations</p>
         </article>
 
-        <article class="reveal group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-glow">
-          <span class="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="10.5" r="2.5"/><circle cx="8.5" cy="7.5" r="2.5"/><circle cx="6.5" cy="12.5" r="2.5"/><path d="M12 22a10 10 0 1 1 10-10c0 2-1 3-3 3h-1.5a2 2 0 0 0-1.5 3.3 2 2 0 0 1-1.5 3.7Z"/></svg>
-          </span>
-          <h3 class="mt-4 font-display text-lg font-bold text-slate-900">Design UX/UI</h3>
-          <p class="mt-1 text-sm text-slate-500">Figma, design system, recherche.</p>
-          <p class="mt-3 text-xs font-semibold text-brand-600">18 formations →</p>
+        <article data-tilt class="group bg-paper p-7 transition-colors hover:bg-paper2">
+          <div class="mono text-[11px] text-dim">04</div>
+          <svg class="mt-5 h-6 w-6 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="2.4"/><circle cx="17.5" cy="10.5" r="2.4"/><circle cx="8.5" cy="7.5" r="2.4"/><circle cx="6.5" cy="12.5" r="2.4"/><path d="M12 22a10 10 0 1 1 10-10c0 2-1 3-3 3h-1.5a2 2 0 0 0-1.5 3.3 2 2 0 0 1-1.5 3.7Z"/></svg>
+          <h3 class="mt-4 text-[19px] font-semibold">Design UX/UI</h3>
+          <p class="mono mt-2 text-[11px] text-dim">18 formations</p>
         </article>
 
-        <article class="reveal group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-glow">
-          <span class="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
-          </span>
-          <h3 class="mt-4 font-display text-lg font-bold text-slate-900">Cybersécurité</h3>
-          <p class="mt-1 text-sm text-slate-500">Pentest, SOC, conformité.</p>
-          <p class="mt-3 text-xs font-semibold text-brand-600">14 formations →</p>
+        <article data-tilt class="group bg-paper p-7 transition-colors hover:bg-paper2">
+          <div class="mono text-[11px] text-dim">05</div>
+          <svg class="mt-5 h-6 w-6 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <h3 class="mt-4 text-[19px] font-semibold">Cybersécurité</h3>
+          <p class="mono mt-2 text-[11px] text-dim">14 formations</p>
         </article>
 
-        <article class="reveal group relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-6 shadow-card transition-all hover:-translate-y-1 hover:shadow-glow md:col-span-1">
-          <span class="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </span>
-          <h3 class="mt-4 font-display text-lg font-bold text-slate-900">Management &amp; Soft Skills</h3>
-          <p class="mt-1 text-sm text-slate-500">Leadership, communication, agilité.</p>
-          <p class="mt-3 text-xs font-semibold text-brand-600">21 formations →</p>
+        <article data-tilt class="group bg-paper p-7 transition-colors hover:bg-paper2 md:col-span-1">
+          <div class="mono text-[11px] text-dim">06</div>
+          <svg class="mt-5 h-6 w-6 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <h3 class="mt-4 text-[19px] font-semibold">Management &amp; Soft Skills</h3>
+          <p class="mono mt-2 text-[11px] text-dim">21 formations</p>
         </article>
       </div>
     </div>
   </section>
 
-  <!-- ============ POURQUOI / FEATURES ============ -->
-  <section class="bg-white py-20 sm:py-28">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="reveal mx-auto max-w-2xl text-center">
-        <span class="inline-block rounded-full bg-accent-500/10 px-3 py-1 text-sm font-semibold text-accent-600">Pourquoi Houra</span>
-        <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Une méthode pensée pour la réussite</h2>
-        <p class="mt-4 text-lg text-slate-600">Pas seulement des vidéos : un véritable accompagnement, des projets concrets et une certification reconnue.</p>
-      </div>
+  <!-- ===================== POURQUOI ===================== -->
+  <section class="border-t border-ink/10 bg-paper py-24 sm:py-32">
+    <div class="mx-auto max-w-container px-7">
+      <div class="reveal mono text-[12px] text-slate">— Pourquoi Houra</div>
+      <h2 class="reveal hl mt-4 max-w-[20ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1]">Une méthode pensée pour la réussite.</h2>
 
-      <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <div class="reveal rounded-2xl border border-slate-100 p-7 transition-colors hover:border-brand-200 hover:bg-brand-50/40">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-glow">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold text-slate-900">100% finançable</h3>
-          <p class="mt-2 text-slate-600">CPF, OPCO, France Travail ou plan entreprise. On monte votre dossier de financement avec vous, sans paperasse.</p>
+      <div class="mt-16 grid gap-px border-t border-ink/10 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="reveal border-b border-ink/10 py-9 pr-8 sm:border-r">
+          <div class="mono text-[11px] text-dim">01</div>
+          <h3 class="mt-3 text-[20px] font-semibold">100% finançable</h3>
+          <p class="mt-2 text-ink/65">CPF, OPCO, France Travail ou plan entreprise. Nous montons votre dossier — souvent 0 € de reste à charge.</p>
         </div>
-
-        <div class="reveal rounded-2xl border border-slate-100 p-7 transition-colors hover:border-brand-200 hover:bg-brand-50/40">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-glow">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2 4 6v6c0 5 8 8 8 8s8-3 8-8V6l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold text-slate-900">Formateurs experts</h3>
-          <p class="mt-2 text-slate-600">Des professionnels toujours en activité qui transmettent les pratiques réelles du métier, pas la théorie poussiéreuse.</p>
+        <div class="reveal border-b border-ink/10 py-9 pr-8 lg:border-r">
+          <div class="mono text-[11px] text-dim">02</div>
+          <h3 class="mt-3 text-[20px] font-semibold">Formateurs experts</h3>
+          <p class="mt-2 text-ink/65">Des professionnels en activité qui transmettent les pratiques réelles du métier, pas la théorie.</p>
         </div>
-
-        <div class="reveal rounded-2xl border border-slate-100 p-7 transition-colors hover:border-brand-200 hover:bg-brand-50/40">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-glow">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2Z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7Z"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold text-slate-900">Projets concrets</h3>
-          <p class="mt-2 text-slate-600">Construisez un portfolio qui parle aux recruteurs grâce à des cas pratiques inspirés d'entreprises réelles.</p>
+        <div class="reveal border-b border-ink/10 py-9 pr-8 sm:border-r lg:border-r-0">
+          <div class="mono text-[11px] text-dim">03</div>
+          <h3 class="mt-3 text-[20px] font-semibold">Projets concrets</h3>
+          <p class="mt-2 text-ink/65">Un portfolio qui parle aux recruteurs, bâti sur des cas inspirés d'entreprises réelles.</p>
         </div>
-
-        <div class="reveal rounded-2xl border border-slate-100 p-7 transition-colors hover:border-brand-200 hover:bg-brand-50/40">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-glow">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold text-slate-900">Mentor dédié</h3>
-          <p class="mt-2 text-slate-600">Un accompagnement personnalisé, des points réguliers et des réponses à vos questions sous 24h.</p>
+        <div class="reveal border-b border-ink/10 py-9 pr-8 sm:border-r sm:border-b-0">
+          <div class="mono text-[11px] text-dim">04</div>
+          <h3 class="mt-3 text-[20px] font-semibold">Mentor dédié</h3>
+          <p class="mt-2 text-ink/65">Un accompagnement personnalisé et des réponses à vos questions sous 24 h.</p>
         </div>
-
-        <div class="reveal rounded-2xl border border-slate-100 p-7 transition-colors hover:border-brand-200 hover:bg-brand-50/40">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-glow">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold text-slate-900">Certification reconnue</h3>
-          <p class="mt-2 text-slate-600">Des titres inscrits au RNCP et des certifications valorisées par les employeurs partout en France.</p>
+        <div class="reveal border-b border-ink/10 py-9 pr-8 sm:border-b-0 lg:border-r">
+          <div class="mono text-[11px] text-dim">05</div>
+          <h3 class="mt-3 text-[20px] font-semibold">Certification RNCP</h3>
+          <p class="mt-2 text-ink/65">Des titres reconnus par l'État et valorisés par les employeurs partout en France.</p>
         </div>
-
-        <div class="reveal rounded-2xl border border-slate-100 p-7 transition-colors hover:border-brand-200 hover:bg-brand-50/40">
-          <span class="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 text-white shadow-glow">
-            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4"/><path d="m6.3 6.3 2.9 2.9"/><path d="M2 12h4"/><path d="M12 18v4"/><path d="m17.7 17.7-2.9-2.9"/><path d="M22 12h-4"/><path d="m17.7 6.3-2.9 2.9"/><circle cx="12" cy="12" r="2"/></svg>
-          </span>
-          <h3 class="mt-5 font-display text-xl font-bold text-slate-900">Accès à vie</h3>
-          <p class="mt-2 text-slate-600">Gardez vos cours, leurs mises à jour et l'accès à la communauté Houra, pour toujours.</p>
+        <div class="reveal py-9 pr-8">
+          <div class="mono text-[11px] text-dim">06</div>
+          <h3 class="mt-3 text-[20px] font-semibold">Accès à vie</h3>
+          <p class="mt-2 text-ink/65">Vos cours, leurs mises à jour et la communauté Houra — pour toujours.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ METHODE / STEPS ============ -->
-  <section id="methode" class="relative overflow-hidden bg-brand-950 py-20 sm:py-28">
-    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-      <div class="absolute right-0 top-0 h-80 w-80 rounded-full bg-brand-500/20 blur-3xl"></div>
-      <div class="absolute bottom-0 left-1/4 h-72 w-72 rounded-full bg-accent-500/15 blur-3xl"></div>
-    </div>
-    <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="reveal mx-auto max-w-2xl text-center">
-        <span class="inline-block rounded-full bg-white/10 px-3 py-1 text-sm font-semibold text-brand-100">Comment ça marche</span>
-        <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">De l'inscription à la certification, en 4 étapes</h2>
-      </div>
+  <!-- ===================== MÉTHODE (dark) ===================== -->
+  <section id="methode" class="bg-ink py-24 text-paper sm:py-32">
+    <div class="mx-auto max-w-container px-7">
+      <div class="reveal mono text-[12px] text-paper/50">— Comment ça marche</div>
+      <h2 class="reveal hl mt-4 max-w-[22ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1]">De l'inscription à la certification.</h2>
 
-      <div class="mt-14 grid gap-6 md:grid-cols-4">
-        <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-          <span class="font-display text-5xl font-extrabold text-brand-400/40">01</span>
-          <h3 class="mt-3 font-display text-lg font-bold text-white">Choisissez</h3>
-          <p class="mt-2 text-sm text-slate-300">Un conseiller vous aide à sélectionner la formation alignée sur votre objectif de carrière.</p>
+      <div class="mt-16 grid gap-px border border-paper/15 bg-paper/15 md:grid-cols-4">
+        <div class="reveal bg-ink p-8">
+          <div class="font-sans text-[44px] font-extrabold leading-none text-paper/25">01</div>
+          <h3 class="mt-4 text-[18px] font-semibold">Choisissez</h3>
+          <p class="mt-2 text-[15px] text-paper/55">Un conseiller cible la formation alignée sur votre objectif.</p>
         </div>
-        <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-          <span class="font-display text-5xl font-extrabold text-brand-400/40">02</span>
-          <h3 class="mt-3 font-display text-lg font-bold text-white">Financez</h3>
-          <p class="mt-2 text-sm text-slate-300">On s'occupe de votre dossier CPF / OPCO. Reste à charge : souvent 0 €.</p>
+        <div class="reveal bg-ink p-8">
+          <div class="font-sans text-[44px] font-extrabold leading-none text-paper/25">02</div>
+          <h3 class="mt-4 text-[18px] font-semibold">Financez</h3>
+          <p class="mt-2 text-[15px] text-paper/55">Nous gérons votre dossier CPF / OPCO. Reste à charge : souvent 0 €.</p>
         </div>
-        <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-          <span class="font-display text-5xl font-extrabold text-brand-400/40">03</span>
-          <h3 class="mt-3 font-display text-lg font-bold text-white">Formez-vous</h3>
-          <p class="mt-2 text-sm text-slate-300">En ligne, à votre rythme, avec votre mentor et des projets pratiques.</p>
+        <div class="reveal bg-ink p-8">
+          <div class="font-sans text-[44px] font-extrabold leading-none text-paper/25">03</div>
+          <h3 class="mt-4 text-[18px] font-semibold">Formez-vous</h3>
+          <p class="mt-2 text-[15px] text-paper/55">En ligne, à votre rythme, avec mentor et projets pratiques.</p>
         </div>
-        <div class="reveal rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-          <span class="font-display text-5xl font-extrabold text-accent-400/50">04</span>
-          <h3 class="mt-3 font-display text-lg font-bold text-white">Certifiez-vous</h3>
-          <p class="mt-2 text-sm text-slate-300">Décrochez un titre reconnu et boostez votre CV auprès des recruteurs.</p>
+        <div class="reveal bg-ink p-8">
+          <div class="font-sans text-[44px] font-extrabold leading-none text-paper">04</div>
+          <h3 class="mt-4 text-[18px] font-semibold">Certifiez-vous</h3>
+          <p class="mt-2 text-[15px] text-paper/55">Un titre reconnu, et un CV qui change de catégorie.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ TEMOIGNAGES ============ -->
-  <section id="temoignages" class="bg-slate-50 py-20 sm:py-28">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="reveal mx-auto max-w-2xl text-center">
-        <span class="inline-block rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-700">Ils l'ont fait</span>
-        <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Des carrières transformées</h2>
-      </div>
+  <!-- ===================== TÉMOIGNAGES ===================== -->
+  <section id="temoignages" class="bg-paper py-24 sm:py-32">
+    <div class="mx-auto max-w-container px-7">
+      <div class="reveal mono text-[12px] text-slate">— Ils l'ont fait</div>
+      <h2 class="reveal hl mt-4 text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1]">Des carrières transformées.</h2>
 
-      <div class="mt-14 grid gap-6 lg:grid-cols-3">
-        <figure class="reveal flex flex-col rounded-2xl border border-slate-100 bg-white p-7 shadow-card">
-          <div class="flex gap-0.5 text-amber-400" aria-label="Noté 5 sur 5">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-          </div>
-          <blockquote class="mt-4 flex-1 text-slate-700">« J'étais en reconversion totale. En 6 mois, j'ai décroché mon premier poste de développeuse web. L'accompagnement fait toute la différence. »</blockquote>
-          <figcaption class="mt-6 flex items-center gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-full bg-brand-600 font-bold text-white">AR</span>
-            <span><span class="block font-semibold text-slate-900">Amélie R.</span><span class="block text-sm text-slate-500">Développeuse Web · Lyon</span></span>
+      <div class="mt-16 grid gap-px border border-ink/10 bg-ink/10 md:grid-cols-3">
+        <figure class="reveal flex flex-col bg-paper p-8">
+          <div class="mono text-[12px] tracking-[.2em] text-ink">★★★★★</div>
+          <blockquote class="mt-5 flex-1 text-[17px] leading-relaxed">« En reconversion totale. En 6 mois, premier poste de développeuse. L'accompagnement fait tout. »</blockquote>
+          <figcaption class="mt-7 flex items-center gap-3 border-t border-ink/10 pt-5">
+            <span class="grid h-10 w-10 place-items-center bg-ink text-[12px] font-bold text-paper">AR</span>
+            <span><span class="block font-semibold">Amélie R.</span><span class="mono block text-[11px] text-dim">Dév. Web · Lyon</span></span>
           </figcaption>
         </figure>
-
-        <figure class="reveal flex flex-col rounded-2xl border border-slate-100 bg-white p-7 shadow-card lg:-translate-y-3">
-          <div class="flex gap-0.5 text-amber-400" aria-label="Noté 5 sur 5">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-          </div>
-          <blockquote class="mt-4 flex-1 text-slate-700">« La formation Data &amp; IA est d'une qualité rare. Projets concrets, mentor au top, et un vrai retour sur mes livrables. J'ai doublé mon salaire. »</blockquote>
-          <figcaption class="mt-6 flex items-center gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-full bg-accent-600 font-bold text-white">KB</span>
-            <span><span class="block font-semibold text-slate-900">Karim B.</span><span class="block text-sm text-slate-500">Data Analyst · Paris</span></span>
+        <figure class="reveal flex flex-col bg-paper p-8">
+          <div class="mono text-[12px] tracking-[.2em] text-ink">★★★★★</div>
+          <blockquote class="mt-5 flex-1 text-[17px] leading-relaxed">« La formation Data &amp; IA est d'une qualité rare. Projets concrets, mentor au top. J'ai doublé mon salaire. »</blockquote>
+          <figcaption class="mt-7 flex items-center gap-3 border-t border-ink/10 pt-5">
+            <span class="grid h-10 w-10 place-items-center bg-ink text-[12px] font-bold text-paper">KB</span>
+            <span><span class="block font-semibold">Karim B.</span><span class="mono block text-[11px] text-dim">Data Analyst · Paris</span></span>
           </figcaption>
         </figure>
-
-        <figure class="reveal flex flex-col rounded-2xl border border-slate-100 bg-white p-7 shadow-card">
-          <div class="flex gap-0.5 text-amber-400" aria-label="Noté 5 sur 5">
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8 5.8 21.3l2.4-7.4L2 9.4h7.6z"/></svg>
-          </div>
-          <blockquote class="mt-4 flex-1 text-slate-700">« Tout était financé par mon CPF, dossier réglé en quelques jours. J'ai pu me former le soir sans quitter mon emploi. Je recommande à 100%. »</blockquote>
-          <figcaption class="mt-6 flex items-center gap-3">
-            <span class="grid h-11 w-11 place-items-center rounded-full bg-violet-500 font-bold text-white">SL</span>
-            <span><span class="block font-semibold text-slate-900">Sophie L.</span><span class="block text-sm text-slate-500">Responsable Marketing · Nantes</span></span>
+        <figure class="reveal flex flex-col bg-paper p-8">
+          <div class="mono text-[12px] tracking-[.2em] text-ink">★★★★★</div>
+          <blockquote class="mt-5 flex-1 text-[17px] leading-relaxed">« Tout financé par mon CPF, dossier réglé en quelques jours. Formée le soir sans quitter mon emploi. »</blockquote>
+          <figcaption class="mt-7 flex items-center gap-3 border-t border-ink/10 pt-5">
+            <span class="grid h-10 w-10 place-items-center bg-ink text-[12px] font-bold text-paper">SL</span>
+            <span><span class="block font-semibold">Sophie L.</span><span class="mono block text-[11px] text-dim">Resp. Marketing · Nantes</span></span>
           </figcaption>
         </figure>
       </div>
     </div>
   </section>
 
-  <!-- ============ TARIFS ============ -->
-  <section id="tarifs" class="bg-white py-20 sm:py-28">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="reveal mx-auto max-w-2xl text-center">
-        <span class="inline-block rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700">Tarifs</span>
-        <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Un investissement, souvent 0 € de votre poche</h2>
-        <p class="mt-4 inline-flex items-center gap-2 text-slate-600">
-          <svg class="h-5 w-5 text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>
-          Jusqu'à <strong class="text-slate-900">100% pris en charge</strong> par votre CPF
-        </p>
+  <!-- ===================== TARIFS ===================== -->
+  <section id="tarifs" class="border-t border-ink/10 bg-paper py-24 sm:py-32">
+    <div class="mx-auto max-w-container px-7">
+      <div class="reveal flex flex-col justify-between gap-4 md:flex-row md:items-end">
+        <div>
+          <div class="mono text-[12px] text-slate">— Tarifs</div>
+          <h2 class="hl mt-4 max-w-[16ch] text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1]">Souvent 0 € de votre poche.</h2>
+        </div>
+        <p class="mono max-w-[34ch] text-[12px] text-slate">Jusqu'à 100% pris en charge par votre CPF.</p>
       </div>
 
-      <div class="mt-14 grid items-stretch gap-6 lg:grid-cols-3">
+      <div class="mt-16 grid gap-px border border-ink/10 bg-ink/10 lg:grid-cols-3">
         <!-- Essentiel -->
-        <div class="reveal flex flex-col rounded-3xl border border-slate-200 bg-white p-8 shadow-card">
-          <h3 class="font-display text-lg font-bold text-slate-900">Essentiel</h3>
-          <p class="mt-1 text-sm text-slate-500">Pour monter en compétence sur un sujet précis.</p>
-          <div class="mt-5"><span class="font-display text-4xl font-extrabold text-slate-900">490 €</span><span class="text-slate-500"> / formation</span></div>
-          <ul class="mt-6 space-y-3 text-sm text-slate-700">
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>1 formation certifiante</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Accès 12 mois</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Communauté &amp; support</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Certificat de réussite</li>
+        <div class="reveal flex flex-col bg-paper p-9">
+          <div class="mono text-[11px] text-dim">Essentiel</div>
+          <div class="mt-5 font-sans text-[44px] font-bold leading-none">490&nbsp;€</div>
+          <div class="mono mt-1 text-[11px] text-dim">/ formation</div>
+          <ul class="mt-7 flex-1 space-y-3 text-[15px]">
+            <li class="flex gap-3 border-b border-ink/10 pb-3"><span class="mono text-dim">01</span>1 formation certifiante</li>
+            <li class="flex gap-3 border-b border-ink/10 pb-3"><span class="mono text-dim">02</span>Accès 12 mois</li>
+            <li class="flex gap-3 border-b border-ink/10 pb-3"><span class="mono text-dim">03</span>Communauté &amp; support</li>
+            <li class="flex gap-3"><span class="mono text-dim">04</span>Certificat de réussite</li>
           </ul>
-          <a href="#" class="mt-8 inline-flex items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-5 py-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100">Choisir Essentiel</a>
+          <a href="#" class="mono mt-8 inline-flex items-center justify-center border border-ink px-5 py-3.5 text-[12px] transition-colors hover:bg-ink hover:text-paper">Choisir Essentiel</a>
         </div>
-
-        <!-- Pro (populaire) -->
-        <div class="reveal relative flex flex-col rounded-3xl border-2 border-brand-600 bg-brand-950 p-8 text-white shadow-glow lg:-translate-y-3">
-          <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-brand-400 to-accent-400 px-4 py-1 text-xs font-bold text-brand-950">★ Le plus choisi</span>
-          <h3 class="font-display text-lg font-bold">Pro</h3>
-          <p class="mt-1 text-sm text-slate-300">Pour une vraie montée en compétence et un changement de poste.</p>
-          <div class="mt-5"><span class="font-display text-4xl font-extrabold">990 €</span><span class="text-slate-300"> / parcours</span></div>
-          <ul class="mt-6 space-y-3 text-sm text-slate-100">
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>3 formations au choix</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Mentor dédié &amp; projets corrigés</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Certification RNCP</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Accès à vie &amp; mises à jour</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Éligible CPF · reste à charge 0 €</li>
+        <!-- Pro (ink) -->
+        <div class="reveal flex flex-col bg-ink p-9 text-paper">
+          <div class="mono flex items-center justify-between text-[11px] text-paper/55"><span>Pro</span><span>★ Le plus choisi</span></div>
+          <div class="mt-5 font-sans text-[44px] font-bold leading-none">990&nbsp;€</div>
+          <div class="mono mt-1 text-[11px] text-paper/55">/ parcours</div>
+          <ul class="mt-7 flex-1 space-y-3 text-[15px]">
+            <li class="flex gap-3 border-b border-paper/15 pb-3"><span class="mono text-paper/45">01</span>3 formations au choix</li>
+            <li class="flex gap-3 border-b border-paper/15 pb-3"><span class="mono text-paper/45">02</span>Mentor dédié &amp; projets corrigés</li>
+            <li class="flex gap-3 border-b border-paper/15 pb-3"><span class="mono text-paper/45">03</span>Certification RNCP</li>
+            <li class="flex gap-3 border-b border-paper/15 pb-3"><span class="mono text-paper/45">04</span>Accès à vie &amp; mises à jour</li>
+            <li class="flex gap-3"><span class="mono text-paper/45">05</span>Éligible CPF · reste à charge 0 €</li>
           </ul>
-          <a href="#" class="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-brand-700 transition-transform hover:-translate-y-0.5">Choisir Pro
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          <a href="#" class="mono mt-8 inline-flex items-center justify-center gap-2 bg-paper px-5 py-3.5 text-[12px] text-ink transition-transform hover:-translate-y-0.5">Choisir Pro
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
           </a>
         </div>
-
         <!-- Entreprise -->
-        <div class="reveal flex flex-col rounded-3xl border border-slate-200 bg-white p-8 shadow-card">
-          <h3 class="font-display text-lg font-bold text-slate-900">Entreprise</h3>
-          <p class="mt-1 text-sm text-slate-500">Pour former et fidéliser vos équipes.</p>
-          <div class="mt-5"><span class="font-display text-4xl font-extrabold text-slate-900">Sur devis</span></div>
-          <ul class="mt-6 space-y-3 text-sm text-slate-700">
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Accès illimité pour vos équipes</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Dashboard RH &amp; suivi</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Formateur dédié &amp; sur-mesure</li>
-            <li class="flex gap-2"><svg class="mt-0.5 h-5 w-5 flex-none text-accent-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 6-11 11-5-5"/></svg>Facturation OPCO</li>
+        <div class="reveal flex flex-col bg-paper p-9">
+          <div class="mono text-[11px] text-dim">Entreprise</div>
+          <div class="mt-5 font-sans text-[44px] font-bold leading-none">Sur devis</div>
+          <div class="mono mt-1 text-[11px] text-dim">facturation OPCO</div>
+          <ul class="mt-7 flex-1 space-y-3 text-[15px]">
+            <li class="flex gap-3 border-b border-ink/10 pb-3"><span class="mono text-dim">01</span>Accès illimité équipes</li>
+            <li class="flex gap-3 border-b border-ink/10 pb-3"><span class="mono text-dim">02</span>Dashboard RH &amp; suivi</li>
+            <li class="flex gap-3 border-b border-ink/10 pb-3"><span class="mono text-dim">03</span>Formateur dédié sur-mesure</li>
+            <li class="flex gap-3"><span class="mono text-dim">04</span>Onboarding prioritaire</li>
           </ul>
-          <a href="#contact" class="mt-8 inline-flex items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-5 py-3 text-sm font-semibold text-brand-700 transition-colors hover:bg-brand-100">Nous contacter</a>
+          <a href="#contact" class="mono mt-8 inline-flex items-center justify-center border border-ink px-5 py-3.5 text-[12px] transition-colors hover:bg-ink hover:text-paper">Nous contacter</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ FAQ ============ -->
-  <section id="faq" class="bg-slate-50 py-20 sm:py-28">
-    <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-      <div class="reveal text-center">
-        <span class="inline-block rounded-full bg-brand-100 px-3 py-1 text-sm font-semibold text-brand-700">FAQ</span>
-        <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Vos questions, nos réponses</h2>
-      </div>
+  <!-- ===================== FAQ ===================== -->
+  <section id="faq" class="bg-paper py-24 sm:py-32">
+    <div class="mx-auto max-w-[820px] px-7">
+      <div class="reveal mono text-[12px] text-slate">— FAQ</div>
+      <h2 class="reveal hl mt-4 text-[clamp(2.2rem,5vw,4rem)] font-bold leading-[1]">Vos questions, nos réponses.</h2>
 
-      <div class="mt-10 space-y-3">
-        <div class="reveal overflow-hidden rounded-2xl border border-slate-200 bg-white">
-          <button class="faq-btn flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded="false">
-            <span class="font-display font-semibold text-slate-900">Les formations sont-elles éligibles au CPF ?</span>
-            <svg class="faq-chevron h-5 w-5 flex-none text-brand-600 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      <div class="mt-12 border-t border-ink/12">
+        <div class="reveal border-b border-ink/12">
+          <button class="faq-btn flex w-full items-center justify-between gap-6 py-6 text-left" aria-expanded="false">
+            <span class="text-[18px] font-semibold">Les formations sont-elles éligibles au CPF ?</span>
+            <svg class="faq-ic h-5 w-5 flex-none transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           </button>
-          <div class="faq-panel"><p class="px-6 pb-5 text-slate-600">Oui. La grande majorité de nos parcours sont éligibles au CPF, et nous gérons l'intégralité de votre dossier de financement (CPF, OPCO, France Travail). Dans la plupart des cas, le reste à charge est de 0 €.</p></div>
+          <div class="faq-panel"><p class="pb-6 text-ink/65">Oui. La majorité de nos parcours sont éligibles au CPF, et nous gérons l'intégralité de votre dossier (CPF, OPCO, France Travail). Dans la plupart des cas, le reste à charge est de 0 €.</p></div>
         </div>
-
-        <div class="reveal overflow-hidden rounded-2xl border border-slate-200 bg-white">
-          <button class="faq-btn flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded="false">
-            <span class="font-display font-semibold text-slate-900">Ai-je besoin de prérequis ?</span>
-            <svg class="faq-chevron h-5 w-5 flex-none text-brand-600 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <div class="reveal border-b border-ink/12">
+          <button class="faq-btn flex w-full items-center justify-between gap-6 py-6 text-left" aria-expanded="false">
+            <span class="text-[18px] font-semibold">Ai-je besoin de prérequis ?</span>
+            <svg class="faq-ic h-5 w-5 flex-none transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           </button>
-          <div class="faq-panel"><p class="px-6 pb-5 text-slate-600">La plupart de nos formations sont accessibles aux débutants. Chaque fiche indique clairement le niveau requis, et un conseiller valide avec vous que le parcours correspond à votre profil.</p></div>
+          <div class="faq-panel"><p class="pb-6 text-ink/65">La plupart de nos formations sont accessibles aux débutants. Chaque fiche indique le niveau requis, et un conseiller valide que le parcours correspond à votre profil.</p></div>
         </div>
-
-        <div class="reveal overflow-hidden rounded-2xl border border-slate-200 bg-white">
-          <button class="faq-btn flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded="false">
-            <span class="font-display font-semibold text-slate-900">Les certifications sont-elles reconnues ?</span>
-            <svg class="faq-chevron h-5 w-5 flex-none text-brand-600 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <div class="reveal border-b border-ink/12">
+          <button class="faq-btn flex w-full items-center justify-between gap-6 py-6 text-left" aria-expanded="false">
+            <span class="text-[18px] font-semibold">Les certifications sont-elles reconnues ?</span>
+            <svg class="faq-ic h-5 w-5 flex-none transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           </button>
-          <div class="faq-panel"><p class="px-6 pb-5 text-slate-600">Oui. Houra Formation est certifié Qualiopi et propose des titres inscrits au RNCP, reconnus par l'État et valorisés par les employeurs.</p></div>
+          <div class="faq-panel"><p class="pb-6 text-ink/65">Oui. Houra Formation est certifié Qualiopi et propose des titres inscrits au RNCP, reconnus par l'État et valorisés par les employeurs.</p></div>
         </div>
-
-        <div class="reveal overflow-hidden rounded-2xl border border-slate-200 bg-white">
-          <button class="faq-btn flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded="false">
-            <span class="font-display font-semibold text-slate-900">Combien de temps ai-je accès à la formation ?</span>
-            <svg class="faq-chevron h-5 w-5 flex-none text-brand-600 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <div class="reveal border-b border-ink/12">
+          <button class="faq-btn flex w-full items-center justify-between gap-6 py-6 text-left" aria-expanded="false">
+            <span class="text-[18px] font-semibold">Combien de temps ai-je accès ?</span>
+            <svg class="faq-ic h-5 w-5 flex-none transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           </button>
-          <div class="faq-panel"><p class="px-6 pb-5 text-slate-600">12 mois avec la formule Essentiel, et un accès à vie avec les formules Pro et Entreprise — mises à jour de contenu incluses.</p></div>
+          <div class="faq-panel"><p class="pb-6 text-ink/65">12 mois avec la formule Essentiel, et un accès à vie avec les formules Pro et Entreprise — mises à jour incluses.</p></div>
         </div>
-
-        <div class="reveal overflow-hidden rounded-2xl border border-slate-200 bg-white">
-          <button class="faq-btn flex w-full items-center justify-between gap-4 px-6 py-5 text-left" aria-expanded="false">
-            <span class="font-display font-semibold text-slate-900">Puis-je être accompagné pour le financement ?</span>
-            <svg class="faq-chevron h-5 w-5 flex-none text-brand-600 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <div class="reveal border-b border-ink/12">
+          <button class="faq-btn flex w-full items-center justify-between gap-6 py-6 text-left" aria-expanded="false">
+            <span class="text-[18px] font-semibold">Puis-je être accompagné pour le financement ?</span>
+            <svg class="faq-ic h-5 w-5 flex-none transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
           </button>
-          <div class="faq-panel"><p class="px-6 pb-5 text-slate-600">Absolument. Un conseiller dédié monte votre dossier avec vous de A à Z et vous accompagne jusqu'à la validation du financement.</p></div>
+          <div class="faq-panel"><p class="pb-6 text-ink/65">Absolument. Un conseiller dédié monte votre dossier de A à Z et vous accompagne jusqu'à la validation du financement.</p></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ FINAL CTA ============ -->
-  <section id="contact" class="relative overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-brand-800 py-20 sm:py-24">
-    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-      <div class="absolute -left-10 top-0 h-72 w-72 rounded-full bg-white/10 blur-3xl animate-blob"></div>
-      <div class="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-accent-400/20 blur-3xl animate-blob" style="animation-delay:-6s"></div>
-    </div>
-    <div class="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="reveal text-3xl font-extrabold tracking-tight text-white sm:text-5xl">Prêt à transformer votre avenir professionnel ?</h2>
-      <p class="reveal mx-auto mt-4 max-w-2xl text-lg text-brand-100">Parlez à un conseiller gratuitement et recevez votre plan de formation personnalisé en 48h.</p>
-      <div class="reveal mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-        <a href="#tarifs" class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-7 py-4 text-base font-semibold text-brand-700 shadow-xl transition-transform hover:-translate-y-0.5 sm:w-auto">Commencer maintenant</a>
-        <a href="#" class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-7 py-4 text-base font-semibold text-white backdrop-blur transition-colors hover:bg-white/20 sm:w-auto">Parler à un conseiller</a>
+  <!-- ===================== CTA ===================== -->
+  <section id="contact" class="bg-ink py-28 text-paper">
+    <div class="mx-auto max-w-container px-7">
+      <div class="reveal mono text-[12px] text-paper/50">— Un seul interlocuteur</div>
+      <h2 class="reveal hl mt-5 max-w-[18ch] text-[clamp(2.4rem,6vw,5rem)] font-bold leading-[0.98]">Prêt à transformer votre avenir ?</h2>
+      <div class="reveal mt-12 grid items-end gap-10 md:grid-cols-[1.4fr_1fr]">
+        <a class="mono inline-block border-b-2 border-paper pb-2 text-[clamp(1.4rem,3.4vw,2.4rem)] font-sans font-semibold lowercase tracking-tight transition-colors hover:text-paper/70" href="mailto:contact@houraformation.fr">contact@houraformation.fr</a>
+        <div class="flex flex-col gap-5">
+          <div><div class="mono text-[11px] text-paper/45">Réponse</div><div class="mt-1 text-[17px]">Sous 48 h ouvrées</div></div>
+          <div><div class="mono text-[11px] text-paper/45">Financement</div><div class="mt-1 text-[17px]">CPF · OPCO · accompagné</div></div>
+        </div>
       </div>
-      <p class="reveal mt-6 text-sm text-brand-200">Sans engagement · Réponse sous 48h · Financement CPF accompagné</p>
     </div>
   </section>
 
 </main>
 
-<!-- ============ FOOTER ============ -->
-<footer class="bg-brand-950 text-slate-300">
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <div class="grid gap-10 lg:grid-cols-5">
-      <div class="lg:col-span-2">
-        <a href="#" class="flex items-center gap-2.5" aria-label="Houra Formation, accueil">
-          <span class="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-brand-700">
-            <svg class="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/><path d="M22 10v6"/></svg>
-          </span>
-          <span class="text-lg font-display font-extrabold text-white">Houra<span class="text-brand-300">Formation</span></span>
-        </a>
-        <p class="mt-4 max-w-sm text-sm text-slate-400">L'organisme de formation qui transforme votre potentiel en compétences reconnues. Certifié Qualiopi · Éligible CPF.</p>
-        <form class="mt-6 flex max-w-sm gap-2" id="newsletter">
-          <label for="news-email" class="sr-only">Votre adresse e-mail</label>
-          <input id="news-email" name="email" type="email" required placeholder="Votre e-mail" class="min-w-0 flex-1 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-slate-400 focus:border-brand-400 focus:bg-white/10" />
-          <button type="submit" class="rounded-xl bg-brand-500 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-400">S'abonner</button>
+<!-- ===================== FOOTER ===================== -->
+<footer class="bg-ink pb-10 pt-16 text-paper">
+  <div class="mx-auto max-w-container px-7">
+    <div class="flex flex-wrap justify-between gap-8 border-b border-paper/15 pb-9">
+      <div class="col">
+        <h4 class="mono mb-4 text-[10.5px] text-paper/45">Formations</h4>
+        <a href="#formations" class="mb-2 block text-[14.5px] text-paper/80 hover:text-paper">Développement Web</a>
+        <a href="#formations" class="mb-2 block text-[14.5px] text-paper/80 hover:text-paper">Data &amp; IA</a>
+        <a href="#formations" class="mb-2 block text-[14.5px] text-paper/80 hover:text-paper">Marketing Digital</a>
+        <a href="#formations" class="mb-2 block text-[14.5px] text-paper/80 hover:text-paper">Cybersécurité</a>
+      </div>
+      <div class="col">
+        <h4 class="mono mb-4 text-[10.5px] text-paper/45">Maison</h4>
+        <p class="mb-2 text-[14.5px] text-paper/80">France entière · en ligne</p>
+        <a href="mailto:contact@houraformation.fr" class="mb-2 block text-[14.5px] text-paper/80 hover:text-paper">contact@houraformation.fr</a>
+        <a href="#" class="mb-2 block text-[14.5px] text-paper/80 hover:text-paper">houraformation.fr</a>
+      </div>
+      <div class="col">
+        <h4 class="mono mb-4 text-[10.5px] text-paper/45">Newsletter</h4>
+        <form id="newsletter" class="flex gap-2">
+          <label for="news-email" class="sr-only">E-mail</label>
+          <input id="news-email" type="email" required placeholder="Votre e-mail" class="min-w-0 flex-1 border border-paper/20 bg-transparent px-4 py-3 text-[14px] text-paper placeholder-paper/40 focus:border-paper" />
+          <button type="submit" class="mono bg-paper px-4 py-3 text-[11px] text-ink">OK</button>
         </form>
-        <p id="news-msg" class="mt-2 hidden text-sm text-accent-400">Merci ! Vous êtes bien inscrit·e à notre newsletter.</p>
+        <p id="news-msg" class="mono mt-2 hidden text-[11px] text-paper/60">Merci, inscription confirmée.</p>
       </div>
-
-      <nav aria-label="Formations">
-        <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white">Formations</h3>
-        <ul class="mt-4 space-y-3 text-sm">
-          <li><a href="#formations" class="hover:text-white">Développement Web</a></li>
-          <li><a href="#formations" class="hover:text-white">Data &amp; IA</a></li>
-          <li><a href="#formations" class="hover:text-white">Marketing Digital</a></li>
-          <li><a href="#formations" class="hover:text-white">Design UX/UI</a></li>
-          <li><a href="#formations" class="hover:text-white">Cybersécurité</a></li>
-        </ul>
-      </nav>
-
-      <nav aria-label="Entreprise">
-        <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white">Entreprise</h3>
-        <ul class="mt-4 space-y-3 text-sm">
-          <li><a href="#" class="hover:text-white">À propos</a></li>
-          <li><a href="#" class="hover:text-white">Nos formateurs</a></li>
-          <li><a href="#tarifs" class="hover:text-white">Tarifs</a></li>
-          <li><a href="#" class="hover:text-white">Financement CPF</a></li>
-          <li><a href="#contact" class="hover:text-white">Contact</a></li>
-        </ul>
-      </nav>
-
-      <nav aria-label="Légal">
-        <h3 class="font-display text-sm font-bold uppercase tracking-wider text-white">Légal</h3>
-        <ul class="mt-4 space-y-3 text-sm">
-          <li><a href="#" class="hover:text-white">Mentions légales</a></li>
-          <li><a href="#" class="hover:text-white">CGV</a></li>
-          <li><a href="#" class="hover:text-white">Confidentialité</a></li>
-          <li><a href="#" class="hover:text-white">Accessibilité</a></li>
-        </ul>
-      </nav>
     </div>
-
-    <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
-      <p class="text-sm text-slate-400">© <span id="year">2026</span> Houra Formation — Organisme certifié Qualiopi. Tous droits réservés.</p>
-      <div class="flex items-center gap-3">
-        <a href="#" aria-label="LinkedIn" class="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95 4 0 4.74 2.4 4.74 5.5V21h-4v-5c0-1.2 0-2.7-1.7-2.7s-1.96 1.3-1.96 2.62V21H9z"/></svg>
-        </a>
-        <a href="#" aria-label="YouTube" class="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23 12s0-3.5-.45-5.18a2.74 2.74 0 0 0-1.93-1.93C18.94 4.44 12 4.44 12 4.44s-6.94 0-8.62.45a2.74 2.74 0 0 0-1.93 1.93C1 8.5 1 12 1 12s0 3.5.45 5.18a2.74 2.74 0 0 0 1.93 1.93c1.68.45 8.62.45 8.62.45s6.94 0 8.62-.45a2.74 2.74 0 0 0 1.93-1.93C23 15.5 23 12 23 12ZM9.75 15.5v-7l6 3.5Z"/></svg>
-        </a>
-        <a href="#" aria-label="Instagram" class="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-slate-300 transition-colors hover:bg-white/10 hover:text-white">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
-        </a>
-      </div>
+    <div class="hl select-none whitespace-nowrap pt-8 text-[clamp(2.6rem,15vw,12rem)] font-extrabold leading-[.82]">HOURA&nbsp;FORMATION</div>
+    <div class="mono mt-7 flex flex-wrap justify-between gap-4 text-[11px] text-paper/45">
+      <span>© <span id="year">2026</span> Houra Formation — Organisme certifié Qualiopi</span>
+      <span>Exigeant · Certifiant · Discret</span>
     </div>
   </div>
 </footer>
 
 <script>
   (function () {
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var coarse = window.matchMedia('(hover: none)').matches;
 
-    // Year
     var y = document.getElementById('year'); if (y) y.textContent = new Date().getFullYear();
 
-    // Sticky header style on scroll
-    var inner = document.getElementById('nav-inner');
-    function onScroll() {
-      if (window.scrollY > 12) {
-        inner.classList.add('bg-white','shadow-card','border-slate-200');
-        inner.classList.remove('bg-brand-950/40','border-white/10');
-        inner.querySelectorAll('a,button').forEach(function (el) {
-          if (el.hasAttribute('data-keep')) return;
-        });
-        inner.classList.add('scrolled');
+    // nav scrolled state
+    var nav = document.getElementById('nav');
+    function onScroll(){ nav.classList.toggle('scrolled', scrollY > 12); }
+    function applyNav(){
+      if (nav.classList.contains('scrolled')) {
+        nav.style.background = 'rgba(244,241,236,.72)';
+        nav.style.backdropFilter = 'blur(14px) saturate(140%)';
+        nav.style.webkitBackdropFilter = 'blur(14px) saturate(140%)';
+        nav.style.borderBottomColor = 'rgba(10,10,10,.08)';
       } else {
-        inner.classList.remove('bg-white','shadow-card','border-slate-200');
-        inner.classList.add('bg-brand-950/40','border-white/10');
-        inner.classList.remove('scrolled');
+        nav.style.background = ''; nav.style.backdropFilter = ''; nav.style.webkitBackdropFilter = ''; nav.style.borderBottomColor = 'transparent';
       }
     }
-    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    var mo = new MutationObserver(applyNav); mo.observe(nav, { attributes:true, attributeFilter:['class'] });
+    addEventListener('scroll', onScroll, { passive:true }); onScroll(); applyNav();
 
-    // Mobile menu
-    var btn = document.getElementById('menu-btn');
-    var menu = document.getElementById('mobile-menu');
-    var iO = document.getElementById('icon-open');
-    var iC = document.getElementById('icon-close');
+    // mobile menu
+    var btn = document.getElementById('menu-btn'), menu = document.getElementById('mobile-menu'),
+        io = document.getElementById('ic-o'), ic = document.getElementById('ic-c');
     if (btn) {
       btn.addEventListener('click', function () {
         var open = menu.classList.toggle('hidden') === false;
         btn.setAttribute('aria-expanded', String(open));
-        btn.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
-        iO.classList.toggle('hidden', open);
-        iC.classList.toggle('hidden', !open);
+        io.classList.toggle('hidden', open); ic.classList.toggle('hidden', !open);
       });
       menu.querySelectorAll('a').forEach(function (a) {
-        a.addEventListener('click', function () {
-          menu.classList.add('hidden');
-          btn.setAttribute('aria-expanded', 'false');
-          iO.classList.remove('hidden'); iC.classList.add('hidden');
-        });
+        a.addEventListener('click', function () { menu.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); io.classList.remove('hidden'); ic.classList.add('hidden'); });
       });
     }
 
-    // Scroll reveal
+    // reveal
     var reveals = document.querySelectorAll('.reveal');
-    if (reduce || !('IntersectionObserver' in window)) {
-      reveals.forEach(function (el) { el.classList.add('in'); });
+    if (mq.matches || !('IntersectionObserver' in window)) {
+      reveals.forEach(function (el){ el.classList.add('in'); });
     } else {
-      var ro = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e, i) {
-          if (e.isIntersecting) {
-            var el = e.target;
-            el.style.transitionDelay = Math.min(i * 60, 180) + 'ms';
-            el.classList.add('in');
-            ro.unobserve(el);
-          }
-        });
-      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-      reveals.forEach(function (el) { ro.observe(el); });
+      var ro = new IntersectionObserver(function (es) {
+        es.forEach(function (e, i) { if (e.isIntersecting) { e.target.style.transitionDelay = Math.min(i*55,170)+'ms'; e.target.classList.add('in'); ro.unobserve(e.target); } });
+      }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+      reveals.forEach(function (el){ ro.observe(el); });
     }
 
-    // Animated counters
-    function animateCounter(el) {
+    // counters
+    function animate(el) {
       var target = parseFloat(el.getAttribute('data-target')) || 0;
-      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-      var suffix = el.getAttribute('data-suffix') || '';
-      if (reduce) {
-        el.textContent = target.toLocaleString('fr-FR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
-        return;
-      }
-      var start = performance.now(), dur = 1500;
-      function tick(now) {
-        var p = Math.min((now - start) / dur, 1);
-        var eased = 1 - Math.pow(1 - p, 3);
-        var val = target * eased;
-        el.textContent = val.toLocaleString('fr-FR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
-        if (p < 1) requestAnimationFrame(tick);
-        else el.textContent = target.toLocaleString('fr-FR', { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix;
-      }
+      var dec = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      var suf = el.getAttribute('data-suffix') || '';
+      function fmt(v){ return v.toLocaleString('fr-FR', { minimumFractionDigits:dec, maximumFractionDigits:dec }) + suf; }
+      if (mq.matches) { el.textContent = fmt(target); return; }
+      var s = performance.now(), d = 1600;
+      function tick(now){ var p = Math.min((now-s)/d,1), e = 1-Math.pow(1-p,3); el.textContent = fmt(target*e); if (p<1) requestAnimationFrame(tick); else el.textContent = fmt(target); }
       requestAnimationFrame(tick);
     }
     var counters = document.querySelectorAll('[data-counter]');
     if ('IntersectionObserver' in window) {
-      var co = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) { animateCounter(e.target); co.unobserve(e.target); }
-        });
-      }, { threshold: 0.6 });
-      counters.forEach(function (el) { co.observe(el); });
-    } else {
-      counters.forEach(animateCounter);
-    }
+      var co = new IntersectionObserver(function (es){ es.forEach(function (e){ if (e.isIntersecting){ animate(e.target); co.unobserve(e.target); } }); }, { threshold:0.6 });
+      counters.forEach(function (el){ co.observe(el); });
+    } else counters.forEach(animate);
 
-    // FAQ accordion
+    // FAQ
     document.querySelectorAll('.faq-btn').forEach(function (b) {
       b.addEventListener('click', function () {
-        var panel = b.nextElementSibling;
-        var open = b.getAttribute('aria-expanded') === 'true';
-        // close others
-        document.querySelectorAll('.faq-btn').forEach(function (other) {
-          if (other !== b) {
-            other.setAttribute('aria-expanded', 'false');
-            other.nextElementSibling.style.maxHeight = null;
-            var ch = other.querySelector('.faq-chevron'); if (ch) ch.style.transform = '';
-          }
-        });
+        var panel = b.nextElementSibling, open = b.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('.faq-btn').forEach(function (o){ if (o!==b){ o.setAttribute('aria-expanded','false'); o.nextElementSibling.style.maxHeight=null; var i=o.querySelector('.faq-ic'); if(i)i.style.transform=''; } });
         b.setAttribute('aria-expanded', String(!open));
         panel.style.maxHeight = open ? null : panel.scrollHeight + 'px';
-        var chev = b.querySelector('.faq-chevron');
-        if (chev) chev.style.transform = open ? '' : 'rotate(180deg)';
+        var ic2 = b.querySelector('.faq-ic'); if (ic2) ic2.style.transform = open ? '' : 'rotate(45deg)';
       });
     });
 
-    // Newsletter (demo)
+    // newsletter
     var nf = document.getElementById('newsletter');
-    if (nf) nf.addEventListener('submit', function (e) {
-      e.preventDefault();
-      document.getElementById('news-msg').classList.remove('hidden');
-      nf.reset();
-    });
-  })();
-</script>
+    if (nf) nf.addEventListener('submit', function (e){ e.preventDefault(); document.getElementById('news-msg').classList.remove('hidden'); nf.reset(); });
 
-<!-- ===== Card 3D tilt (subtle, pointer devices only) ===== -->
-<script>
-  (function () {
-    if (window.matchMedia('(hover: none)').matches) return;
-    var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    function addTilt(el) {
-      var MAX = 6;
-      el.style.willChange = 'transform';
-      el.addEventListener('pointermove', function (e) {
-        if (mq.matches || e.pointerType === 'touch') return;
-        var r = el.getBoundingClientRect();
-        var px = (e.clientX - r.left) / r.width - 0.5;
-        var py = (e.clientY - r.top) / r.height - 0.5;
-        el.style.transition = 'transform .08s linear';
-        el.style.transform = 'perspective(1000px) rotateX(' + (-py * MAX).toFixed(2) + 'deg) rotateY(' + (px * MAX).toFixed(2) + 'deg) translateY(-6px)';
-      });
-      el.addEventListener('pointerleave', function () {
-        el.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1)';
-        el.style.transform = '';
+    // subtle card tilt (pointer devices)
+    if (!coarse) {
+      document.querySelectorAll('[data-tilt]').forEach(function (el) {
+        el.style.willChange = 'transform';
+        el.addEventListener('pointermove', function (e) {
+          if (mq.matches || e.pointerType === 'touch') return;
+          var r = el.getBoundingClientRect(), px = (e.clientX-r.left)/r.width-0.5, py = (e.clientY-r.top)/r.height-0.5;
+          el.style.transition = 'transform .08s linear';
+          el.style.transform = 'perspective(1100px) rotateX(' + (-py*4).toFixed(2) + 'deg) rotateY(' + (px*4).toFixed(2) + 'deg)';
+        });
+        el.addEventListener('pointerleave', function () { el.style.transition = 'transform .5s cubic-bezier(.2,.7,.2,1)'; el.style.transform = ''; });
       });
     }
-    document.querySelectorAll('#formations article, #tarifs .rounded-3xl').forEach(addTilt);
   })();
 </script>
 
-<!-- ===== Three.js hero scene ===== -->
-<script type="importmap">
-{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
-</script>
+<!-- ===================== Realistic 3D hero (local Three.js + HDR) ===================== -->
 <script type="module">
   const canvas = document.getElementById('hero-canvas');
+  const loadingEl = document.getElementById('scene-loading');
+  const hideLoading = () => { if (loadingEl) loadingEl.style.opacity = '0'; };
+  // If the module/WebGL can't run, reveal the premium studio gradient underneath.
+  setTimeout(hideLoading, 1200);
+
   if (canvas) {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let noMotion = mq.matches;
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let noMotion = rm.matches;
+    let THREE, RGBELoader;
+    try {
+      THREE = await import('three');
+      ({ RGBELoader } = await import('three/addons/loaders/RGBELoader.js'));
+    } catch (e) { hideLoading(); throw e; }
 
-    import('three').then((THREE) => {
-      const hero = canvas.parentElement;
-      let renderer;
-      try {
-        renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
-      } catch (e) { return; } // no WebGL -> CSS aurora fallback stays
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    } catch (e) { hideLoading(); }
 
+    if (renderer) {
+      const host = canvas.parentElement;
       const isMobile = window.matchMedia('(max-width: 640px)').matches;
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.05;
       renderer.outputColorSpace = THREE.SRGBColorSpace;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.0;
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-      camera.position.set(0, 0, 6.2);
+      const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+      camera.position.set(0.4, 0.7, 6.2);
 
       const group = new THREE.Group(); scene.add(group);
-      const crystal = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(1.7, 1),
-        new THREE.MeshStandardMaterial({ color: 0x4f46e5, metalness: 0.15, roughness: 0.35, flatShading: true })
-      );
-      group.add(crystal);
-      const halo = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(2.1, 1),
-        new THREE.MeshBasicMaterial({ color: 0x34d399, wireframe: true, transparent: true, opacity: 0.16 })
-      );
-      group.add(halo);
 
-      const COUNT = isMobile ? 1100 : 2600;
+      // Obsidian mirror sphere (reflects the HDR environment)
+      const sphere = new THREE.Mesh(
+        new THREE.SphereGeometry(1.55, 64, 48),
+        new THREE.MeshPhysicalMaterial({ color: 0x0b0e12, metalness: 0.96, roughness: 0.06, clearcoat: 1, clearcoatRoughness: 0.04, envMapIntensity: 1.45 })
+      );
+      sphere.castShadow = true; group.add(sphere);
+
+      // Chrome ring
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(2.35, 0.032, 24, 180),
+        new THREE.MeshStandardMaterial({ color: 0xb6bdc4, metalness: 1, roughness: 0.16, envMapIntensity: 1.5 })
+      );
+      ring.rotation.x = Math.PI * 0.42; group.add(ring);
+
+      // Fine ambient dust
+      const COUNT = isMobile ? 600 : 1500;
       const arr = new Float32Array(COUNT * 3);
       for (let i = 0; i < COUNT; i++) {
-        const r = 4 + Math.random() * 6, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
-        arr[i * 3]     = r * Math.sin(ph) * Math.cos(th);
-        arr[i * 3 + 1] = r * Math.sin(ph) * Math.sin(th);
-        arr[i * 3 + 2] = r * Math.cos(ph);
+        const r = 3 + Math.random() * 7, th = Math.random() * Math.PI * 2, ph = Math.acos(2 * Math.random() - 1);
+        arr[i*3] = r*Math.sin(ph)*Math.cos(th); arr[i*3+1] = r*Math.sin(ph)*Math.sin(th); arr[i*3+2] = r*Math.cos(ph);
       }
-      const pgeo = new THREE.BufferGeometry();
-      pgeo.setAttribute('position', new THREE.BufferAttribute(arr, 3));
-      const particles = new THREE.Points(pgeo, new THREE.PointsMaterial({
-        color: 0xa5b4fc, size: 0.05, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending
-      }));
-      scene.add(particles);
+      const pg = new THREE.BufferGeometry(); pg.setAttribute('position', new THREE.BufferAttribute(arr, 3));
+      const dust = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0x2a3038, size: 0.018, transparent: true, opacity: 0.45, depthWrite: false }));
+      scene.add(dust);
 
-      scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-      const key = new THREE.DirectionalLight(0xffffff, 2.4); key.position.set(4, 6, 5); scene.add(key);
-      const rim1 = new THREE.DirectionalLight(0x6366f1, 1.6); rim1.position.set(-6, 1, 2); scene.add(rim1);
-      const rim2 = new THREE.DirectionalLight(0x10b981, 1.1); rim2.position.set(3, -5, 1); scene.add(rim2);
+      // Soft contact shadow
+      const ground = new THREE.Mesh(new THREE.PlaneGeometry(60, 60), new THREE.ShadowMaterial({ opacity: 0.16 }));
+      ground.rotation.x = -Math.PI / 2; ground.position.y = -1.72; ground.receiveShadow = true; scene.add(ground);
+
+      // Lighting
+      scene.add(new THREE.HemisphereLight(0xffffff, 0x9a958c, 0.55));
+      const key = new THREE.DirectionalLight(0xfff3e2, 1.7);
+      key.position.set(-5, 7.5, 5); key.castShadow = true;
+      key.shadow.mapSize.set(1024, 1024); key.shadow.camera.near = 1; key.shadow.camera.far = 28;
+      key.shadow.camera.left = -6; key.shadow.camera.right = 6; key.shadow.camera.top = 6; key.shadow.camera.bottom = -6; key.shadow.bias = -0.0004;
+      scene.add(key);
+
+      // HDR environment -> realistic reflections (same asset as the main site)
+      try {
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        new RGBELoader().load('assets/env.hdr', (hdr) => {
+          hdr.mapping = THREE.EquirectangularReflectionMapping;
+          scene.environment = pmrem.fromEquirectangular(hdr).texture;
+          hdr.dispose(); pmrem.dispose(); renderOnce();
+        }, undefined, () => { /* no HDR -> lights-only shading */ });
+      } catch (e) { /* PMREM unsupported -> lights-only */ }
 
       const ptr = { x: 0, y: 0 };
-      window.addEventListener('pointermove', (e) => {
-        ptr.x = (e.clientX / window.innerWidth - 0.5);
-        ptr.y = (e.clientY / window.innerHeight - 0.5);
-      }, { passive: true });
+      window.addEventListener('pointermove', (e) => { ptr.x = e.clientX / window.innerWidth - 0.5; ptr.y = e.clientY / window.innerHeight - 0.5; }, { passive: true });
 
-      function resize() {
-        const w = hero.clientWidth, h = hero.clientHeight;
-        if (!w || !h) return;
-        camera.aspect = w / h; camera.updateProjectionMatrix();
-        renderer.setSize(w, h, false);
-      }
-
+      function resize() { const w = host.clientWidth, h = host.clientHeight; if (!w || !h) return; camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h, false); }
       const clock = new THREE.Clock();
       let raf = 0, visible = true;
+      function renderOnce() { camera.lookAt(0, 0.1, 0); renderer.render(scene, camera); }
       function frame() {
         const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
         if (!noMotion) {
-          crystal.rotation.y += dt * 0.35; crystal.rotation.x += dt * 0.12;
-          halo.rotation.y -= dt * 0.18; halo.rotation.z += dt * 0.05;
-          particles.rotation.y += dt * 0.03;
-          group.position.y = Math.sin(t * 0.6) * 0.12;
-          group.rotation.y += (ptr.x * 0.6 - group.rotation.y) * 0.05;
-          group.rotation.x += (ptr.y * 0.4 - group.rotation.x) * 0.05;
+          group.rotation.y += dt * 0.16; ring.rotation.z += dt * 0.22; dust.rotation.y += dt * 0.02;
+          group.position.y = Math.sin(t * 0.5) * 0.07;
+          camera.position.x += (0.4 + ptr.x * 0.9 - camera.position.x) * 0.04;
+          camera.position.y += (0.7 - ptr.y * 0.5 - camera.position.y) * 0.04;
         }
+        camera.lookAt(0, 0.1, 0);
         renderer.render(scene, camera);
       }
       function loop() { raf = requestAnimationFrame(loop); frame(); }
       function stop() { if (raf) { cancelAnimationFrame(raf); raf = 0; } }
-      function start() { if (noMotion) { stop(); frame(); return; } if (!raf) loop(); }
+      function start() { if (noMotion) { stop(); renderOnce(); return; } if (!raf) loop(); }
 
-      mq.addEventListener('change', (e) => { noMotion = e.matches; if (visible) start(); });
-
+      rm.addEventListener('change', (e) => { noMotion = e.matches; if (visible) start(); });
       let rt;
-      window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { resize(); frame(); }, 150); }, { passive: true });
-      window.addEventListener('load', () => { resize(); frame(); });
+      window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { resize(); renderOnce(); }, 150); }, { passive: true });
+      window.addEventListener('load', () => { resize(); renderOnce(); });
       document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else if (visible) start(); });
-
       if ('IntersectionObserver' in window) {
-        new IntersectionObserver((en) => {
-          visible = en[0].isIntersecting;
-          if (visible && !document.hidden) start(); else stop();
-        }, { threshold: 0.01 }).observe(hero);
+        new IntersectionObserver((en) => { visible = en[0].isIntersecting; if (visible && !document.hidden) start(); else stop(); }, { threshold: 0.01 }).observe(host);
       }
 
-      resize(); frame(); start();
-      setTimeout(() => { resize(); frame(); }, 500);
-    }).catch(() => { /* three.js failed to load -> CSS aurora fallback stays */ });
+      resize(); renderOnce(); hideLoading(); start();
+      setTimeout(() => { resize(); renderOnce(); }, 500);
+    }
   }
 </script>
 </body>
