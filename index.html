@@ -330,9 +330,26 @@ try{
     vehicles[0]=car; scene.add(car); done();
   },undefined,()=>{ vehicles[0]=buildSUV(0x9aa0a6); scene.add(vehicles[0]); done(); });
 
-  vehicles[1]=buildVan(0x0c0d10); scene.add(vehicles[1]);   // black VIP van
-  vehicles[2]=buildSUV(0x121417); scene.add(vehicles[2]);   // black security SUV
-  vehicles[3]=buildJet(0xeef0f0); scene.add(vehicles[3]);   // white jet
+  vehicles[1]=buildVan(0x0c0d10); scene.add(vehicles[1]);   // black VIP van (placeholder)
+  vehicles[2]=buildSUV(0x121417); scene.add(vehicles[2]);   // placeholder until real model
+  vehicles[3]=buildJet(0xeef0f0); scene.add(vehicles[3]);   // placeholder until real model
+
+  // --- swap in real uploaded models (.glb) when present: auto-normalize (scale/center/drop) ---
+  function loadReal(slot,url,targetLen,rotY){
+    gl.load(url,function(g){
+      var obj=g.scene, pivot=new THREE.Group(); obj.rotation.y=rotY||0; pivot.add(obj);
+      pivot.updateWorldMatrix(true,true);
+      var box=new THREE.Box3().setFromObject(obj), size=box.getSize(new THREE.Vector3());
+      var len=Math.max(size.x,size.z)||1, s=targetLen/len; obj.scale.setScalar(s);
+      pivot.updateWorldMatrix(true,true); box.setFromObject(obj); var c=box.getCenter(new THREE.Vector3());
+      obj.position.x-=c.x; obj.position.z-=c.z; obj.position.y-=box.min.y;
+      obj.traverse(function(o){ if(o.isMesh){ o.castShadow=true; if(o.material){ (Array.isArray(o.material)?o.material:[o.material]).forEach(function(m){ m.envMapIntensity=1.3; }); } } });
+      if(vehicles[slot]) scene.remove(vehicles[slot]);
+      vehicles[slot]=pivot; scene.add(pivot);
+    }, undefined, function(){ /* keep placeholder on error */ });
+  }
+  loadReal(2,'assets/suv.glb',4.8,0);          // Tesla -> 03 Protection
+  loadReal(3,'assets/jet.glb',12,Math.PI/2);   // jet  -> 04 Aviation
 
   // scenery layers (parallax, scroll -X)
   // Landscape = real 360° photo (panning sky dome) + reflective road. No fake props.
